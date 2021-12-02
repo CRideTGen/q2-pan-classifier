@@ -1,0 +1,13 @@
+setup.py
+q2_pan_classifier/__init__.py
+q2_pan_classifier/format_types.py
+q2_pan_classifier/plugin_setup.py
+q2_pan_classifier/transformers.py
+q2_pan_classifier.egg-info/PKG-INFO
+q2_pan_classifier.egg-info/SOURCES.txt
+q2_pan_classifier.egg-info/dependency_links.txt
+q2_pan_classifier.egg-info/entry_points.txt
+q2_pan_classifier.egg-info/not-zip-safe
+q2_pan_classifier.egg-info/top_level.txt
+q2_pan_classifier/actions/__init__.py
+q2_pan_classifier/actions/create_classifier.py
