@@ -21,6 +21,7 @@ import qiime2.plugin.model as model
 from q2_types.feature_data import DNAFASTAFormat
 from qiime2.plugin import SemanticType
 
+
 DNAFastaNCBI = SemanticType('DNAFastaNCBI')
 
 
