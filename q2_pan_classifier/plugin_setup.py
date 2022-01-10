@@ -85,6 +85,34 @@ plugin.pipelines.register_function(
 )
 
 plugin.pipelines.register_function(
+    function=actions.cross_validate_classifier,
+inputs={'ref_seqs': FeatureData[Sequence],
+            'ref_tax': FeatureData[Taxonomy]},
+    parameters={},
+    outputs=[('expected_taxonomy', FeatureData[Taxonomy]),
+             ('observed_taxonomy', FeatureData[Taxonomy]),
+             ('evaluation', Visualization)],
+    input_descriptions={
+        'ref_seqs': 'Reference sequences to use for classifier '
+                     'training/testing.',
+        'ref_tax': 'Reference taxonomy to use for classifier '
+                    'training/testing.'},
+    parameter_descriptions={},
+    output_descriptions={
+        'expected_taxonomy': 'Expected taxonomic label for each input '
+                             'sequence. Taxonomic labels may be truncated due '
+                             'to k-fold CV and stratification.',
+        'observed_taxonomy': 'Observed taxonomic label for each input '
+                             'sequence, predicted by cross-validation.',
+        'evaluation': 'Visualization of cross-validated accuracy results.'},
+    name='',
+    description=''
+
+)
+
+
+
+plugin.pipelines.register_function(
     function=actions.prep_sequence_reads_single,
     inputs={'sequences': SampleData[SequencesWithQuality]},
     outputs=[

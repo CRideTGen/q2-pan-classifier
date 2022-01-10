@@ -13,7 +13,6 @@
 #   limitations under the License.
 
 import pandas as pd
-
 import qiime2
 
 
@@ -34,6 +33,7 @@ def create_classifier(ctx,
     # importing external plugins to be used later
     extract_refs = ctx.get_action('feature_classifier', 'extract_reads')
     train_classifier = ctx.get_action('feature_classifier', 'fit_classifier_naive_bayes')
+    # get_taxonomy = ctx.get_action('rescript', 'get_ncbi_data')
 
     results = []
 
@@ -81,3 +81,13 @@ def create_classifier(ctx,
     results += trained_class
 
     return tuple(results)
+
+def cross_validate_classifier(ctx, ref_seqs, ref_tax):
+    evaluate_cross_validate = ctx.get_action("rescript", "evaluate_cross_validate")
+
+    results = evaluate_cross_validate(sequences=ref_seqs,
+                                      taxonomy=ref_tax)
+
+    return tuple(results)
+
+
