@@ -19,6 +19,7 @@ from qiime2.plugin import Plugin, Visualization
 import q2_pan_classifier.actions as actions
 
 from q2_pan_classifier.format_types import (DNAFastaNCBI, DNAFastaNCBIFormat, DNAFastaNCBIDirFormat)
+
 from q2_dada2._stats import DADA2Stats
 from q2_types.sample_data import SampleData
 from q2_types.per_sample_sequences import PairedEndSequencesWithQuality, SequencesWithQuality
