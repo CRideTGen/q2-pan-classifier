@@ -1,6 +1,7 @@
 import qiime2
 import os
 import tempfile
+import pathlib
 from q2_pan_classifier.actions.classify_reads import get_cpus
 
 def _return_names_(file_path_names: list) -> list:
