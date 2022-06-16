@@ -22,3 +22,5 @@ from q2_pan_classifier.actions.classify_reads import (classify_reads, classify_r
 # it also keeps linters from complaining
 
 __all__ = ['create_classifier', 'prep_sequence_reads_single','prep_sequence_reads_paired', 'classify_reads','classify_reads_single', 'visualization_final', 'generate_taxonomy']
+from . import _version
+__version__ = _version.get_versions()['version']
