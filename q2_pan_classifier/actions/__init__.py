@@ -16,9 +16,9 @@ from q2_pan_classifier.actions.create_classifier import (create_classifier, gene
 
 from q2_pan_classifier.actions.prep_sequences import (prep_sequence_reads_single, prep_sequence_reads_paired)
 from q2_pan_classifier.actions.classify_reads import (classify_reads, classify_reads_single, visualization_final)
-
+from q2_pan_classifier.actions.name_to_accessions import name_to_accessions
 
 # Good practice is to explicitely mark what is "available" for
 # subpackage export. This is only used by the `from x import *` syntax, but
 # it also keeps linters from complaining
-__all__ = ['create_classifier', 'prep_sequence_reads_single', 'prep_sequence_reads_paired', 'classify_reads','classify_reads_single', 'visualization_final', 'generate_taxonomy']
+__all__ = ['create_classifier', 'prep_sequence_reads_single', 'prep_sequence_reads_paired', 'classify_reads','classify_reads_single', 'visualization_final', 'generate_taxonomy', 'name_to_accessions']

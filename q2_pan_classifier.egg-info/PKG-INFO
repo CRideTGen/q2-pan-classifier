@@ -1,10 +1,8 @@
-Metadata-Version: 1.0
+Metadata-Version: 2.1
 Name: q2-pan-classifier
-Version: 0.0.1.dev0
-Summary: UNKNOWN
+Version: dev-0.1.0-0.gb4c78f8.dirty
 Home-page: https://github.com/ChaseR34/q2-pan-classifier
 Author: Chase Ridenour
 Author-email: Chase.Ridenour@gmail.com
 License: Apache-2.0
-Description: UNKNOWN
-Platform: UNKNOWN
+License-File: LICENSE.txt

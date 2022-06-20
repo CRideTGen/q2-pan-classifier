@@ -1,5 +1,11 @@
+LICENSE.txt
+MANIFEST.in
+README.md
+setup.cfg
 setup.py
+versioneer.py
 q2_pan_classifier/__init__.py
+q2_pan_classifier/_version.py
 q2_pan_classifier/format_types.py
 q2_pan_classifier/plugin_setup.py
 q2_pan_classifier/transformers.py
@@ -10,4 +16,10 @@ q2_pan_classifier.egg-info/entry_points.txt
 q2_pan_classifier.egg-info/not-zip-safe
 q2_pan_classifier.egg-info/top_level.txt
 q2_pan_classifier/actions/__init__.py
+q2_pan_classifier/actions/classify_reads.py
 q2_pan_classifier/actions/create_classifier.py
+q2_pan_classifier/actions/name_to_accessions.py
+q2_pan_classifier/actions/prep_sequences.py
+q2_pan_classifier/actions/minion/__init__.py
+q2_pan_classifier/actions/minion/import_minion_reads.py
+q2_pan_classifier/actions/minion/minion_read_filtering.py

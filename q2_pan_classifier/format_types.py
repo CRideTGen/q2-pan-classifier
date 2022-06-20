@@ -19,9 +19,21 @@ from Bio import Entrez
 import pandas as pd
 import qiime2.plugin.model as model
 from q2_types.feature_data import DNAFASTAFormat
-from qiime2.plugin import SemanticType
+from qiime2.plugin import SemanticType, TextFileFormat
 
 DNAFastaNCBI = SemanticType('DNAFastaNCBI')
+NCBIAccFile = SemanticType("NCBIAccFile")
+
+class NCBIAccFileFormat(model.TextFileFormat):
+    """
+
+    """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+    def _validate_(self, level):
+        pass
+
 
 
 class EntrezFetch:
@@ -155,3 +167,4 @@ class DNAFastaNCBIFormat(DNAFASTAFormat):
 
 
 DNAFastaNCBIDirFormat = model.SingleFileDirectoryFormat('DNAFastaNCBIDirFormat', 'taxonomy.tsv', DNAFastaNCBIFormat)
+NCBIAccFileDirectoryFormat = model.SingleFileDirectoryFormat('NCBIAccFileDirectoryFormat', 'acc.txt', NCBIAccFileFormat)

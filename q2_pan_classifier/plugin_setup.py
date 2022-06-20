@@ -18,7 +18,8 @@ from qiime2.plugin import Plugin, Visualization
 
 import q2_pan_classifier.actions as actions
 
-from q2_pan_classifier.format_types import (DNAFastaNCBI, DNAFastaNCBIFormat, DNAFastaNCBIDirFormat)
+from q2_pan_classifier.format_types import (DNAFastaNCBI, DNAFastaNCBIFormat, DNAFastaNCBIDirFormat, NCBIAccFile,
+                                            NCBIAccFileFormat, NCBIAccFileDirectoryFormat)
 from q2_dada2._stats import DADA2Stats
 from q2_types.sample_data import SampleData
 from q2_types.per_sample_sequences import PairedEndSequencesWithQuality, SequencesWithQuality
@@ -35,11 +36,28 @@ plugin = Plugin(name="pan-classifier",
                 package="q2_pan_classifier",
                 website="https://github.com/ebolyen/q2-reveal")
 
-plugin.register_semantic_types(DNAFastaNCBI)
+plugin.register_semantic_types(DNAFastaNCBI, NCBIAccFile)
 plugin.register_semantic_type_to_format(DNAFastaNCBI, DNAFastaNCBIDirFormat)
+plugin.register_semantic_type_to_format(NCBIAccFile, NCBIAccFileDirectoryFormat)
 plugin.register_formats(DNAFastaNCBIFormat, DNAFastaNCBIDirFormat)
+plugin.register_formats(NCBIAccFileFormat, NCBIAccFileDirectoryFormat)
+
 
 importlib.import_module("q2_pan_classifier.transformers")
+
+
+plugin.methods.register_function(
+
+    function=actions.name_to_accessions,
+    inputs={},
+    outputs=[('acc_file', NCBIAccFile)],
+    parameters={'taxon_name': Str},
+    input_descriptions=None,
+    parameter_descriptions=None,
+    name='Get accession numbers',
+    description="Gets Accession Numbers"
+)
+
 
 plugin.methods.register_function(
     function=actions.generate_taxonomy,

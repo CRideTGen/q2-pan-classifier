@@ -1,3 +1,2 @@
 [qiime2.plugins]
 q2-pan-classifier = q2_pan_classifier.plugin_setup:plugin
-

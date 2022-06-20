@@ -12,7 +12,8 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 import pandas as pd
-from q2_pan_classifier.format_types import DNAFastaNCBIFormat
+from qiime2.plugin import Str
+from q2_pan_classifier.format_types import DNAFastaNCBIFormat, NCBIAccFile, NCBIAccFileFormat
 from q2_pan_classifier.plugin_setup import plugin
 
 from q2_types.feature_data import TSVTaxonomyFormat, DNAFASTAFormat
@@ -67,8 +68,16 @@ def _5(ref_seqs: DNAFastaNCBIFormat) -> TSVTaxonomyFormat:
 
     return tax_out
 
+@plugin.register_transformer
+def _6(input_list: list) -> NCBIAccFileFormat:
 
+    out_path = NCBIAccFileFormat()
 
+    with open(out_path.path, 'w') as ff:
+        for i in input_list:
+            ff.write(f"{i}")
+
+    return out_path
 
 #TODO Need to write tests for the transformer
 #test plugin base from qiime2.plugin
