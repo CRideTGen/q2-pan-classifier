@@ -11,6 +11,7 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+
 import time
 import pkg_resources
 
@@ -20,29 +21,43 @@ import pandas as pd
 import qiime2.plugin.model as model
 from q2_types.feature_data import DNAFASTAFormat
 from qiime2.plugin import SemanticType, TextFileFormat
+from contextlib import contextmanager
 
 DNAFastaNCBI = SemanticType('DNAFastaNCBI')
 NCBIAccFile = SemanticType("NCBIAccFile")
+
 
 class NCBIAccFileFormat(model.TextFileFormat):
     """
 
     """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def _validate_(self, level):
         pass
 
+    @contextmanager
+    def _open_acc_file_(self):
+        acc_file = self.open()
+        try:
+            yield acc_file
+        finally:
+            acc_file.close()
+
+    def get_accession_numbers(self) -> list:
+        with self._open_acc_file_() as acc_file:
+            return acc_file.readlines()
 
 
 class EntrezFetch:
     def __init__(self, email, db, ids, rettype, retmode):
         Entrez.email = email
         self.handle = Entrez.efetch(db=db,
-                               id=ids,
-                               rettype=rettype,
-                               retmode=retmode)
+                                    id=ids,
+                                    rettype=rettype,
+                                    retmode=retmode)
 
     def __enter__(self):
         records = Entrez.read(self.handle)
@@ -50,6 +65,7 @@ class EntrezFetch:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.handle.close()
+
 
 def _accession_number_split_(accession_numbers: list, sub_list_size: int = 100) -> list:
     out_list = list()
@@ -73,7 +89,6 @@ def _accession_number_split_(accession_numbers: list, sub_list_size: int = 100) 
 
 
 def _find_tax_(tax_df_input: pd.DataFrame, taxon: str) -> int:
-
     genus = tax_df_input["Genus"]
     if genus.str.contains(taxon).any():
         index = genus.index[genus.str.contains(taxon) == True][0]
@@ -94,7 +109,6 @@ def _get_taxonomy_(ac_numbers_subset: list, tax_df: pd.DataFrame, email: str) ->
             tax_split = tax_tmp.split(';')
             scientific_name = rec['GBSeq_organism']
 
-
             for tax_level in reversed(tax_split):
                 index = _find_tax_(tax_df, tax_level.strip())
 
@@ -108,6 +122,7 @@ def _get_taxonomy_(ac_numbers_subset: list, tax_df: pd.DataFrame, email: str) ->
                     break
 
     return taxonomy
+
 
 class DNAFastaNCBIFormat(DNAFASTAFormat):
 

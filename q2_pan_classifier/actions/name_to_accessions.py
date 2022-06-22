@@ -1,12 +1,11 @@
-
-from qiime2 import Metadata
-from qiime2.plugin import Str
-
-from q2_pan_classifier.format_types import NCBIAccFile
+from Bio import Entrez
 
 
 def name_to_accessions(taxon_name: str) -> list:
+    Entrez.email = "clr96@nau.edu"
 
-    with open("/scratch/cridenour/Projects/Qiime2Plugins/q2-pan-classifier/q2_pan_classifier/data/test_data.txt", 'r') as rr:
-        tt = rr.readlines()
-    return tt
+    handle = Entrez.esearch(db="nuccore", retMax=100, term=f"{taxon_name}[ORGANISM] AND 5000:1000000000[SLEN]",
+                            idtype="acc")
+    record = Entrez.read(handle)
+
+    return [acc for acc in record["IdList"]]

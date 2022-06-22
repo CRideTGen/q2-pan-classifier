@@ -75,9 +75,14 @@ def _6(input_list: list) -> NCBIAccFileFormat:
 
     with open(out_path.path, 'w') as ff:
         for i in input_list:
-            ff.write(f"{i}")
+            ff.write(f"{i.strip()}\n")
 
     return out_path
+
+@plugin.register_transformer
+def _7(input_acc: NCBIAccFileFormat) -> list:
+    return input_acc.get_accession_numbers()
+
 
 #TODO Need to write tests for the transformer
 #test plugin base from qiime2.plugin
