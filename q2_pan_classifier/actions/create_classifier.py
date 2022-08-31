@@ -16,11 +16,12 @@ import pandas as pd
 
 import qiime2
 
-def generate_taxonomy(ref_seqs: pd.Series) -> list:
 
+def generate_taxonomy(ref_seqs: pd.Series) -> list:
     seq_names = [name.metadata['id'] for name in ref_seqs]
 
     return seq_names
+
 
 def create_classifier(ctx,
                       ref_seqs_file,
@@ -30,14 +31,13 @@ def create_classifier(ctx,
                       r_primer=None,
                       min_len=None,
                       max_len=None):
-
-    #importing external plugins to be used later
+    # importing external plugins to be used later
     extract_refs = ctx.get_action('feature_classifier', 'extract_reads')
     train_classifier = ctx.get_action('feature_classifier', 'fit_classifier_naive_bayes')
 
     results = []
 
-    #importing reference sequences and taxonomy
+    # importing reference sequences and taxonomy
     ref_seqs = qiime2.Artifact.import_data(type='FeatureData[Sequence]',
                                            view=ref_seqs_file,
                                            view_type=None)

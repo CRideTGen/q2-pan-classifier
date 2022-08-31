@@ -1,15 +1,13 @@
 import os
-from os import path, cpu_count
+from os import path
 
 import pandas as pd
 import pkg_resources
+import qiime2
 from jinja2 import Environment, FileSystemLoader
 
-import qiime2
 
-
-
-def _merge_table_(transpose, dada2_table_out, dada2_rep_seqs_out, classified ):
+def _merge_table_(transpose, dada2_table_out, dada2_rep_seqs_out, classified):
     # transposing table and getting metadata
     tt, = transpose(table=dada2_table_out)
     tt_dt = tt.view(pd.DataFrame)
@@ -53,7 +51,7 @@ def classify_reads(ctx, trained_classifier, samp_reads=None, trunc_len_f=None, t
     classified, = classify_sklearn(classifier=trained_classifier, reads=dada2_rep_seqs_out)
     barplot_taxonomy = barplot(table=dada2_table_out, taxonomy=classified)
 
-    merged_table = _merge_table_(transpose, dada2_table_out, dada2_rep_seqs_out, classified )
+    merged_table = _merge_table_(transpose, dada2_table_out, dada2_rep_seqs_out, classified)
     tabulated_table = tabulate(merged_table)
 
     results += [classified]
@@ -65,7 +63,7 @@ def classify_reads(ctx, trained_classifier, samp_reads=None, trunc_len_f=None, t
 
 
 def classify_reads_single(ctx, trained_classifier, samp_reads=None, trunc_len=None,
-                   dada2_table=None, dada2_rep_seqs=None, dada2_stats=None):
+                          dada2_table=None, dada2_rep_seqs=None, dada2_stats=None):
     results = []
 
     # action importing
@@ -91,7 +89,7 @@ def classify_reads_single(ctx, trained_classifier, samp_reads=None, trunc_len=No
     classified, = classify_sklearn(classifier=trained_classifier, reads=dada2_rep_seqs_out)
     barplot_taxonomy = barplot(table=dada2_table_out, taxonomy=classified)
 
-    merged_table = _merge_table_(transpose, dada2_table_out, dada2_rep_seqs_out, classified )
+    merged_table = _merge_table_(transpose, dada2_table_out, dada2_rep_seqs_out, classified)
     tabulated_table = tabulate(merged_table)
 
     results += [classified]
@@ -103,7 +101,6 @@ def classify_reads_single(ctx, trained_classifier, samp_reads=None, trunc_len=No
 
 
 def visualization_final(output_dir: str) -> None:
-
     # temp_dir = tempfile.TemporaryDirectory()
     template_data = pkg_resources.resource_filename('q2_pan_classifier', 'templates')
     jin_env = Environment(loader=FileSystemLoader(template_data), auto_reload=True)

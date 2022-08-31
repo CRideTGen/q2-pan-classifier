@@ -12,8 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 import pandas as pd
-from qiime2.plugin import Str
-from q2_pan_classifier.format_types import DNAFastaNCBIFormat, NCBIAccFile, NCBIAccFileFormat
+from q2_pan_classifier.types_formats_transformers._format import DNAFastaNCBIFormat, NCBIAccFileFormat
 from q2_pan_classifier.plugin_setup import plugin
 
 from q2_types.feature_data import TSVTaxonomyFormat, DNAFASTAFormat

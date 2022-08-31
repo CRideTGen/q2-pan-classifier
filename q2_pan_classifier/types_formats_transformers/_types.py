@@ -1,5 +1,5 @@
 #   Copyright 2021 Chase Ridenour
-#
+
 #   Licensed under the Apache License, Version 2.0 (the "License");
 #   you may not use this file except in compliance with the License.
 #   You may obtain a copy of the License at
@@ -11,10 +11,17 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-import importlib
 
-from . import _version
+from qiime2.plugin import SemanticType
 
-__version__ = _version.get_versions()['version']
+from ._format import DNAFastaNCBIDirFormat, NCBIAccFileDirectoryFormat
+from q2_pan_classifier.plugin_setup import plugin
 
-importlib.import_module("q2_pan_classifier.types_formats_transformers")
+DNAFastaNCBI = SemanticType('DNAFastaNCBI')
+NCBIAccFile = SemanticType("NCBIAccFile")
+
+
+
+plugin.register_semantic_types(DNAFastaNCBI, NCBIAccFile)
+plugin.register_semantic_type_to_format(DNAFastaNCBI, DNAFastaNCBIDirFormat)
+plugin.register_semantic_type_to_format(NCBIAccFile, NCBIAccFileDirectoryFormat)

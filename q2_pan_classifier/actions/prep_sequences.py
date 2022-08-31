@@ -1,11 +1,12 @@
-import qiime2
 import os
 import tempfile
-import pathlib
+
+import qiime2
+
 from q2_pan_classifier.actions.classify_reads import get_cpus
 
-def _return_names_(file_path_names: list) -> list:
 
+def _return_names_(file_path_names: list) -> list:
     names_raw = [os.path.basename(x) for x in file_path_names]
 
     names_out = list()
@@ -22,6 +23,7 @@ def _return_names_(file_path_names: list) -> list:
         else:
             names_out = name.split('_jk')[0]
     return names_out
+
 
 def _generate_manifest_file_(sample_dir_path: str, manifest_file_dir: str) -> tuple:
     """Generates a manifest file in a temporary directory to be used in sequence reads upload"""
@@ -46,13 +48,12 @@ def _generate_manifest_file_(sample_dir_path: str, manifest_file_dir: str) -> tu
         manifest_file.write('\t'.join(HEADER) + '\n')
 
         for out in zip(names, forward_paths, reverse_paths):
-
             manifest_file.write('\t'.join(out) + '\n')
 
     return tuple([os.path.join(manifest_file_dir, "manifest"), names])
 
 
-def _write_metadata_template_(sample_names: list, output_dir: str ) -> None:
+def _write_metadata_template_(sample_names: list, output_dir: str) -> None:
     HEADER = "sample-id"
 
     if output_dir and not os.path.isdir(output_dir):
@@ -66,17 +67,16 @@ def _write_metadata_template_(sample_names: list, output_dir: str ) -> None:
         metadata_file.write('\n'.join(sample_names))
 
 
-def prep_sequence_reads_paired(ctx, sequences=None, sequences_directory=None, metadata_template_dir=None, primer_f=None, primer_r=None):
+def prep_sequence_reads_paired(ctx, sequences=None, sequences_directory=None, metadata_template_dir=None, primer_f=None,
+                               primer_r=None):
     results = []
-
 
     # importing external plugins to be used later
 
     create_table_viz = ctx.get_action('demux', 'summarize')
     cut_adapt = ctx.get_action('cutadapt', 'trim_paired')
 
-    #importing sequences
-
+    # importing sequences
 
     if sequences and sequences_directory:
         raise ValueError("Please only provide a sequence qza or sequence_directory path not both.")
@@ -100,7 +100,6 @@ def prep_sequence_reads_paired(ctx, sequences=None, sequences_directory=None, me
     else:
         raise ValueError("Please provide either a sequence qza or sequence directory path"
                          )
-
 
     # using plugins to trim reads and create reads visualization
 
@@ -123,17 +122,15 @@ def prep_sequence_reads_paired(ctx, sequences=None, sequences_directory=None, me
     return tuple(results)
 
 
-
-def prep_sequence_reads_single(ctx, sequences=None, sequences_directory=None, metadata_template_dir=None, primer_f=None, primer_r=None):
+def prep_sequence_reads_single(ctx, sequences=None, sequences_directory=None, metadata_template_dir=None, primer_f=None,
+                               primer_r=None):
     results = []
-
 
     # importing external plugins to be used later
     cut_adapt = ctx.get_action('cutadapt', 'trim_single')
     create_table_viz = ctx.get_action('demux', 'summarize')
 
-    #importing sequences
-
+    # importing sequences
 
     if sequences and sequences_directory:
         raise ValueError("Please only provide a sequence qza or sequence_directory path not both.")
@@ -157,7 +154,6 @@ def prep_sequence_reads_single(ctx, sequences=None, sequences_directory=None, me
     else:
         raise ValueError("Please provide either a sequence qza or sequence directory path"
                          )
-
 
     # using plugins to trim reads and create reads visualization
 

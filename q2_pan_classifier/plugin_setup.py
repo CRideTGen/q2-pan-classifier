@@ -11,40 +11,27 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-import importlib
 
-from qiime2.plugin import Str, Int, Range, List
+from q2_dada2._stats import DADA2Stats
+from q2_feature_classifier.classifier import TaxonomicClassifier, Taxonomy
+from q2_types.feature_data import FeatureData, Sequence
+from q2_types.feature_table import FeatureTable, Frequency
+from q2_types.per_sample_sequences import PairedEndSequencesWithQuality, SequencesWithQuality
+from q2_types.sample_data import SampleData
 from qiime2.plugin import Plugin, Visualization
+from qiime2.plugin import Str, Int, Range
 
 import q2_pan_classifier.actions as actions
-
-from q2_pan_classifier.format_types import (DNAFastaNCBI, DNAFastaNCBIFormat, DNAFastaNCBIDirFormat, NCBIAccFile,
-                                            NCBIAccFileFormat, NCBIAccFileDirectoryFormat)
-from q2_dada2._stats import DADA2Stats
-from q2_types.sample_data import SampleData
-from q2_types.per_sample_sequences import PairedEndSequencesWithQuality, SequencesWithQuality
-from q2_types.feature_data import FeatureData, Sequence
-from q2_feature_classifier.classifier import TaxonomicClassifier, Taxonomy
-
-from q2_types.feature_table import FeatureTable, Frequency
+from q2_pan_classifier.types_formats_transformers._types import (NCBIAccFile)
 
 # This is the plugin object. It is what the framework will load and what an
 # interface will interact with. Basically every registration we perform will
 # involve this object in some way.
+
 plugin = Plugin(name="pan-classifier",
                 version="0.0.1.dev",
                 package="q2_pan_classifier",
                 website="https://github.com/ebolyen/q2-reveal")
-
-plugin.register_semantic_types(DNAFastaNCBI, NCBIAccFile)
-plugin.register_semantic_type_to_format(DNAFastaNCBI, DNAFastaNCBIDirFormat)
-plugin.register_semantic_type_to_format(NCBIAccFile, NCBIAccFileDirectoryFormat)
-plugin.register_formats(DNAFastaNCBIFormat, DNAFastaNCBIDirFormat)
-plugin.register_formats(NCBIAccFileFormat, NCBIAccFileDirectoryFormat)
-
-
-importlib.import_module("q2_pan_classifier.transformers")
-
 
 plugin.methods.register_function(
 
@@ -57,7 +44,6 @@ plugin.methods.register_function(
     name='Get accession numbers',
     description="Gets Accession Numbers"
 )
-
 
 plugin.methods.register_function(
     function=actions.generate_taxonomy,
@@ -108,7 +94,7 @@ plugin.pipelines.register_function(
     outputs=[
         ('trimmed_reads', SampleData[SequencesWithQuality]),
         ('table_viz', Visualization)
-             ],
+    ],
     parameters={
         'sequences_directory': Str,
         'metadata_template_dir': Str,
@@ -149,7 +135,7 @@ plugin.pipelines.register_function(
     outputs=[
         ('trimmed_reads', SampleData[PairedEndSequencesWithQuality]),
         ('table_viz', Visualization)
-             ],
+    ],
     parameters={
         'sequences_directory': Str,
         'metadata_template_dir': Str,
@@ -205,10 +191,10 @@ plugin.pipelines.register_function(
     },
     input_descriptions={
         'samp_reads': 'Path to sample reads Artifact (.qza file)',
-        'trained_classifier':  'Path to trained classifier Artifact (.qza file)',
+        'trained_classifier': 'Path to trained classifier Artifact (.qza file)',
     },
     parameter_descriptions={
-        'trunc_len_f':   ('Position at which forward read sequences should be '
+        'trunc_len_f': ('Position at which forward read sequences should be '
                         'truncated due to decrease in quality. This truncates '
                         'the 3\' end of the of the input sequences, which '
                         'will be the bases that were sequenced in the last '
@@ -232,8 +218,8 @@ plugin.pipelines.register_function(
     output_descriptions={
         'dada2_table_out': 'The resulting feature table.',
         'dada2_rep_seqs_out': 'The resulting feature sequences. Each '
-                          'feature in the feature table will be '
-                          'represented by exactly one sequence.',
+                              'feature in the feature table will be '
+                              'represented by exactly one sequence.',
         'dada2_stats_out': 'Stats on Dada2 clustering and filtering',
         'classified': 'Resulting Taxonomic Artifact from the classification'
     },
@@ -261,25 +247,25 @@ plugin.pipelines.register_function(
     },
     input_descriptions={
         'samp_reads': 'Path to sample reads Artifact (.qza file)',
-        'trained_classifier':  'Path to trained classifier Artifact (.qza file)',
+        'trained_classifier': 'Path to trained classifier Artifact (.qza file)',
     },
     parameter_descriptions={
-        'trunc_len':   ('Position at which forward read sequences should be '
-                        'truncated due to decrease in quality. This truncates '
-                        'the 3\' end of the of the input sequences, which '
-                        'will be the bases that were sequenced in the last '
-                        'cycles. Reads that are shorter than this value '
-                        'will be discarded. After this parameter is applied '
-                        'there must still be at least a 12 nucleotide overlap '
-                        'between the forward and reverse reads. If 0 is '
-                        'provided, no truncation or length filtering will be '
-                        'performed')
+        'trunc_len': ('Position at which forward read sequences should be '
+                      'truncated due to decrease in quality. This truncates '
+                      'the 3\' end of the of the input sequences, which '
+                      'will be the bases that were sequenced in the last '
+                      'cycles. Reads that are shorter than this value '
+                      'will be discarded. After this parameter is applied '
+                      'there must still be at least a 12 nucleotide overlap '
+                      'between the forward and reverse reads. If 0 is '
+                      'provided, no truncation or length filtering will be '
+                      'performed')
     },
     output_descriptions={
         'dada2_table_out': 'The resulting feature table.',
         'dada2_rep_seqs_out': 'The resulting feature sequences. Each '
-                          'feature in the feature table will be '
-                          'represented by exactly one sequence.',
+                              'feature in the feature table will be '
+                              'represented by exactly one sequence.',
         'dada2_stats_out': 'Stats on Dada2 clustering and filtering',
         'classified': 'Resulting Taxonomic Artifact from the classification'
     },
