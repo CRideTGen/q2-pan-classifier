@@ -11,10 +11,8 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-import importlib
 
-from . import _version
+from ._version import get_versions
 
-__version__ = _version.get_versions()['version']
-
-importlib.import_module("q2_pan_classifier.types_formats_transformers")
+__version__ = get_versions()['version']
+del get_versions

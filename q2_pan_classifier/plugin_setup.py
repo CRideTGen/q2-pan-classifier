@@ -22,7 +22,6 @@ from qiime2.plugin import Plugin, Visualization
 from qiime2.plugin import Str, Int, Range
 
 import q2_pan_classifier.actions as actions
-from q2_pan_classifier.types_formats_transformers._types import (NCBIAccFile)
 
 # This is the plugin object. It is what the framework will load and what an
 # interface will interact with. Basically every registration we perform will
@@ -32,6 +31,10 @@ plugin = Plugin(name="pan-classifier",
                 version="0.0.1.dev",
                 package="q2_pan_classifier",
                 website="https://github.com/ebolyen/q2-reveal")
+
+from q2_pan_classifier.types_formats import NCBIAccFile
+
+
 
 plugin.methods.register_function(
 

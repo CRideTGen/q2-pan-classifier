@@ -1,8 +1,8 @@
 Metadata-Version: 2.1
 Name: q2-pan-classifier
-Version: dev-0.1.0-0.gb4c78f8.dirty
-Home-page: https://github.com/ChaseR34/q2-pan-classifier
+Version: dev-0.1.0-5.g991dbf4.dirty
+Home-page: https://github.com/CRideTGen4/q2-pan-classifier
 Author: Chase Ridenour
-Author-email: Chase.Ridenour@gmail.com
+Author-email: cridenour@tgen.org
 License: Apache-2.0
-License-File: LICENSE.txt
+License-File: LICENSE

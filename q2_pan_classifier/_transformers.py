@@ -12,11 +12,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 import pandas as pd
-from q2_pan_classifier.types_formats_transformers._format import DNAFastaNCBIFormat, NCBIAccFileFormat
-from q2_pan_classifier.plugin_setup import plugin
-
 from q2_types.feature_data import TSVTaxonomyFormat, DNAFASTAFormat
 
+from q2_pan_classifier.formats import DNAFastaNCBIFormat, NCBIAccFileFormat
+from q2_pan_classifier.plugin_setup import plugin
 
 
 @plugin.register_transformer

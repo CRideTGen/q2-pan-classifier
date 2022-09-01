@@ -21,8 +21,14 @@ import qiime2.plugin.model as model
 import skbio
 from Bio import Entrez
 from q2_types.feature_data import DNAFASTAFormat
+from qiime2.plugin import SemanticType
 
 from q2_pan_classifier.plugin_setup import plugin
+
+DNAFastaNCBI = SemanticType('DNAFastaNCBI')
+NCBIAccFile = SemanticType("NCBIAccFile")
+
+
 
 
 class NCBIAccFileFormat(model.TextFileFormat):
@@ -179,7 +185,13 @@ class DNAFastaNCBIFormat(DNAFASTAFormat):
         # TODO: make validatoin function to check if ncbi taxonomic names are there
 
 
+
 DNAFastaNCBIDirFormat = model.SingleFileDirectoryFormat('DNAFastaNCBIDirFormat', 'taxonomy.tsv', DNAFastaNCBIFormat)
 NCBIAccFileDirectoryFormat = model.SingleFileDirectoryFormat('NCBIAccFileDirectoryFormat', 'acc.txt', NCBIAccFileFormat)
 
 plugin.register_formats(DNAFastaNCBIFormat, DNAFastaNCBIDirFormat, NCBIAccFileFormat, NCBIAccFileDirectoryFormat)
+
+plugin.register_semantic_types(DNAFastaNCBI, NCBIAccFile)
+plugin.register_semantic_type_to_format(DNAFastaNCBI, DNAFastaNCBIDirFormat)
+plugin.register_semantic_type_to_format(NCBIAccFile, NCBIAccFileDirectoryFormat)
+
