@@ -21,9 +21,13 @@
  ## Prepping Sequences
  
  directory location: /TGenNextGen/TGN-MiSeq1248/VECTR-PanFlavi/
- 
+ ```{bash}
  bash /scratch/cridenour/Crystal/Adenovirus/Analysis/HAdV41_classification_16May2022/scripts/make_manifest_file.sh -d /TGenNextGen/TGN-MiSeq1248/VECTR-PanFlavi/ -o manifest-file
  qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path manifest-file --output-path paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
  qiime cutadapt trim-paired --i-demultiplexed-sequences paired-end-demux.qza --p-front-f TACAACATGATGGGAAAGAGAGAGAARAA --p-front-r GTGTCCCAKCCRGCTGTGTCATC --o-trimmed-sequences paired-end-demux-trimmed.qza
  qiime dada2 denoise-paired --i-demultiplexed-seqs paired-end-demux-trimmed.qza --p-trunc-len-f 0 --p-trunc-len-r 0 --output-dir dada2_results
  qiime feature-classifier classify-sklearn --i-reads dada2_results/representative_sequences.qza --i-classifier classifier/classifier.qza --o-classification classification.qza
+
+ 
+ ```
+ 
