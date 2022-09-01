@@ -29,8 +29,6 @@ DNAFastaNCBI = SemanticType('DNAFastaNCBI')
 NCBIAccFile = SemanticType("NCBIAccFile")
 
 
-
-
 class NCBIAccFileFormat(model.TextFileFormat):
     """
 
@@ -185,7 +183,6 @@ class DNAFastaNCBIFormat(DNAFASTAFormat):
         # TODO: make validatoin function to check if ncbi taxonomic names are there
 
 
-
 DNAFastaNCBIDirFormat = model.SingleFileDirectoryFormat('DNAFastaNCBIDirFormat', 'taxonomy.tsv', DNAFastaNCBIFormat)
 NCBIAccFileDirectoryFormat = model.SingleFileDirectoryFormat('NCBIAccFileDirectoryFormat', 'acc.txt', NCBIAccFileFormat)
 
@@ -194,4 +191,3 @@ plugin.register_formats(DNAFastaNCBIFormat, DNAFastaNCBIDirFormat, NCBIAccFileFo
 plugin.register_semantic_types(DNAFastaNCBI, NCBIAccFile)
 plugin.register_semantic_type_to_format(DNAFastaNCBI, DNAFastaNCBIDirFormat)
 plugin.register_semantic_type_to_format(NCBIAccFile, NCBIAccFileDirectoryFormat)
-

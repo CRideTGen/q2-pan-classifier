@@ -20,7 +20,7 @@ from q2_types.per_sample_sequences import PairedEndSequencesWithQuality, Sequenc
 from q2_types.sample_data import SampleData
 from qiime2.plugin import Plugin, Visualization
 from qiime2.plugin import Str, Int, Range
-
+from . import __version__
 import q2_pan_classifier.actions as actions
 
 # This is the plugin object. It is what the framework will load and what an
@@ -28,7 +28,7 @@ import q2_pan_classifier.actions as actions
 # involve this object in some way.
 
 plugin = Plugin(name="pan-classifier",
-                version="0.0.1.dev",
+                version=__version__,
                 package="q2_pan_classifier",
                 website="https://github.com/ebolyen/q2-reveal")
 
