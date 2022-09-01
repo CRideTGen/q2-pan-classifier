@@ -23,10 +23,10 @@ setup(
     #add paths to important data
     package_data={},
     author="Chase Ridenour",
-    author_email="Chase.Ridenour@gmail.com",
+    author_email="cridenour@tgen.org",
     description="",
     license='Apache-2.0',
-    url="https://github.com/ChaseR34/q2-pan-classifier",
+    url="https://github.com/CRideTGen4/q2-pan-classifier",
     # This entry_point defines a structure in your site-packages which
     # pkg_resources can use to load "stuff" from a "namespace".
     # QIIME 2 has defined a namespace called qiime2.plugins, and it should
