@@ -1,0 +1,6 @@
+#File	sequences//ENTVxHonorsWilsonx20220209_S17_L001_R1_001.fastq.gz	sequences//ENTVxHonorsWilsonx20220209_S17_L001_R2_001.fastq.gz
+#Total	26	6526
+#Matched	26	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	14	53.84615%	3500	53.63163%
+r_primer	12	46.15385%	3000	45.96997%

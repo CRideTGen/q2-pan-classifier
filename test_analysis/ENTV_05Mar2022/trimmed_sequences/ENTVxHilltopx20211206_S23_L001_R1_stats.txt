@@ -1,0 +1,6 @@
+#File	sequences//ENTVxHilltopx20211206_S23_L001_R1_001.fastq.gz	sequences//ENTVxHilltopx20211206_S23_L001_R2_001.fastq.gz
+#Total	136	34136
+#Matched	136	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	72	52.94118%	18000	52.73026%
+r_primer	64	47.05882%	16000	46.87134%

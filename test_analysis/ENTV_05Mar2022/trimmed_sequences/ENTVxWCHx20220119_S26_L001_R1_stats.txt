@@ -1,0 +1,6 @@
+#File	sequences//ENTVxWCHx20220119_S26_L001_R1_001.fastq.gz	sequences//ENTVxWCHx20220119_S26_L001_R2_001.fastq.gz
+#Total	72	18072
+#Matched	72	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	36	50.00000%	9000	49.80080%
+r_primer	36	50.00000%	9000	49.80080%

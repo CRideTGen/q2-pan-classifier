@@ -1,0 +1,6 @@
+#File	sequences//ENTVReillyMcKay20220228_S30_L001_R1_001.fastq.gz	sequences//ENTVReillyMcKay20220228_S30_L001_R2_001.fastq.gz
+#Total	2578	647078
+#Matched	2578	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	1341	52.01707%	335250	51.80983%
+r_primer	1237	47.98293%	309250	47.79177%

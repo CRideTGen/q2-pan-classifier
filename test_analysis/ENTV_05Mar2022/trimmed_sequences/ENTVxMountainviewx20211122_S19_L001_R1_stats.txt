@@ -1,0 +1,6 @@
+#File	sequences//ENTVxMountainviewx20211122_S19_L001_R1_001.fastq.gz	sequences//ENTVxMountainviewx20211122_S19_L001_R2_001.fastq.gz
+#Total	30	7530
+#Matched	30	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	15	50.00000%	3750	49.80080%
+r_primer	15	50.00000%	3750	49.80080%

@@ -1,0 +1,6 @@
+#File	sequences//ENTV87Skyview20220228_S29_L001_R1_001.fastq.gz	sequences//ENTV87Skyview20220228_S29_L001_R2_001.fastq.gz
+#Total	3286	824786
+#Matched	3286	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	1692	51.49117%	423000	51.28603%
+r_primer	1594	48.50883%	398500	48.31556%

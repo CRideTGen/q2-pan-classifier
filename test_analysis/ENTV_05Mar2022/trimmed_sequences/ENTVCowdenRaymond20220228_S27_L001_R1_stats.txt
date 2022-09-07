@@ -1,0 +1,6 @@
+#File	sequences//ENTVCowdenRaymond20220228_S27_L001_R1_001.fastq.gz	sequences//ENTVCowdenRaymond20220228_S27_L001_R2_001.fastq.gz
+#Total	1596	400596
+#Matched	1595	99.93734%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	817	51.19048%	204250	50.98653%
+r_primer	778	48.74687%	194500	48.55266%

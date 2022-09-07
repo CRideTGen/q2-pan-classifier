@@ -1,0 +1,8 @@
+113e414b079d450a06c1a52b9647533e  VERSION
+ffa2a26a0886508c4a3ba24df64e3033  metadata.yaml
+28820a1ca29d1fa6725dfdd591c27282  data/taxonomy.tsv
+113e414b079d450a06c1a52b9647533e  provenance/VERSION
+9e1b0222c00facf2d9bede55353450d3  provenance/citations.bib
+ffa2a26a0886508c4a3ba24df64e3033  provenance/metadata.yaml
+a61a38f38806e929113746cc98c636d4  provenance/action/accession_ids.tsv
+609a0cb732b5474b7f10d0cfff5d7d41  provenance/action/action.yaml

@@ -1,0 +1,6 @@
+#File	sequences//ENTVxReillyx20211129_S28_L001_R1_001.fastq.gz	sequences//ENTVxReillyx20211129_S28_L001_R2_001.fastq.gz
+#Total	408	102408
+#Matched	408	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	211	51.71569%	52750	51.50965%
+r_primer	197	48.28431%	49250	48.09195%

@@ -1,0 +1,6 @@
+#File	sequences//ENTVxSechristxSDx20211124_S7_L001_R1_001.fastq.gz	sequences//ENTVxSechristxSDx20211124_S7_L001_R2_001.fastq.gz
+#Total	284	71284
+#Matched	284	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	149	52.46479%	37250	52.25577%
+r_primer	135	47.53521%	33750	47.34583%

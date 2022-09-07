@@ -1,0 +1,8 @@
+113e414b079d450a06c1a52b9647533e  VERSION
+65c23301f3ed67498051323ebd5b867c  metadata.yaml
+635dcb9dd6a0b01f66f28f555ed06d9a  data/dna-sequences.fasta
+113e414b079d450a06c1a52b9647533e  provenance/VERSION
+70261a952bb7e84536051bf6ef2284f1  provenance/citations.bib
+65c23301f3ed67498051323ebd5b867c  provenance/metadata.yaml
+d81f125af67d1045b7a4fbbff70fe401  provenance/action/accession_ids.tsv
+6bcc3c6bc2279ab1f3c49f50d3e23261  provenance/action/action.yaml

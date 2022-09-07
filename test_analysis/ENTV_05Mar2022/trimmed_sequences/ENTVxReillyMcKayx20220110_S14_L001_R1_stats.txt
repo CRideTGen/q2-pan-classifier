@@ -1,0 +1,6 @@
+#File	sequences//ENTVxReillyMcKayx20220110_S14_L001_R1_001.fastq.gz	sequences//ENTVxReillyMcKayx20220110_S14_L001_R2_001.fastq.gz
+#Total	848	212848
+#Matched	848	100.00000%
+#Name	Reads	ReadsPct	Bases	BasesPct
+f_primer	445	52.47642%	111250	52.26735%
+r_primer	403	47.52358%	100750	47.33425%
