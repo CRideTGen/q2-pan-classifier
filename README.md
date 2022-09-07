@@ -226,7 +226,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
         --m-sample-metadata-file entero_meta.tsv
       
       qiime feature-table tabulate-seqs \
-        --i-data rrep_seqs_dada2_entero.qza \
+        --i-data rep_seqs_dada2_entero.qza \
         --o-visualization visual_output/rep_seqs_entero.qzv
         
       ```
