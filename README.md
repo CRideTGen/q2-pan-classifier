@@ -32,7 +32,7 @@ Below is a tutorial classifying enteroviruses using pan-entero primers.
 
 
 
-Note: This tutorial expects that you have Qiime2 already installed. If you do not, please follow the directions on their website: 
+Note: This tutorial expects that you have Qiime2 already installed. If you do not, please follow the directions on their website, please: 
 
 https://docs.qiime2.org/2022.8/install/
 
