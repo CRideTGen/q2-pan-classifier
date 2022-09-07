@@ -1,31 +1,5 @@
 # q2-pan-classifier
- # Flavivivirus Analysis of potential co-infected WNV and SLEV
- 
- ## Making classifier
- pan-flavivirus analysis, here are the primers: PFlav-fAAR (TACAACATGATGGGAAAGAGAGAGAARAA from 9040 to 9068 of AF196835) and PFlav-rKR (GTGTCCCAKCCRGCTGTGTCATC from positions 9305 to 9283 of AF196835
- 
-
- 
- Untrimmed references count: 25086
- trimmed references count: 17241
- dereplicated references: 3790
- 
- 
- ## Prepping Sequences
- 
- directory location: /TGenNextGen/TGN-MiSeq1248/VECTR-PanFlavi/
- ```{bash}
- bash /scratch/cridenour/Crystal/Adenovirus/Analysis/HAdV41_classification_16May2022/scripts/make_manifest_file.sh -d /TGenNextGen/TGN-MiSeq1248/VECTR-PanFlavi/ -o manifest-file
- qiime tools import --type 'SampleData[PairedEndSequencesWithQuality]' --input-path manifest-file --output-path paired-end-demux.qza --input-format PairedEndFastqManifestPhred33V2
- qiime cutadapt trim-paired --i-demultiplexed-sequences paired-end-demux.qza --p-front-f TACAACATGATGGGAAAGAGAGAGAARAA --p-front-r GTGTCCCAKCCRGCTGTGTCATC --o-trimmed-sequences paired-end-demux-trimmed.qza
- qiime dada2 denoise-paired --i-demultiplexed-seqs paired-end-demux-trimmed.qza --p-trunc-len-f 0 --p-trunc-len-r 0 --output-dir dada2_results
- qiime feature-classifier classify-sklearn --i-reads dada2_results/representative_sequences.qza --i-classifier classifier/classifier.qza --o-classification classification.qza
-
- 
- ```
- # 
-
-# PanViral
+ # Enterovirus Classification Tutorial
 
 ## Purpose
 
@@ -50,32 +24,30 @@ Using the Qiime2 framework to develop a pipeline to classify pan-viral samples a
    3. Classify Clusters
    4. Generate Visualizations
 
-Below is a tutorial classifying flaviviruses using pan-flavi primers. 
+Below is a tutorial classifying enteroviruses using pan-entero primers. 
 
 
 
-# PanFlavi Classification Tutorial
+# Entero Classification Tutorial
 
 
 
 Note: This tutorial expects that you have Qiime2 already installed. If you do not, please follow the directions on their website: 
 
-https://docs.qiime2.org/2021.4/install/
+https://docs.qiime2.org/2022.8/install/
 
 
 
 ## Clone git repository
 
 ```
-git clone https://github.com/ChaseR34/PanViral
+git clone https://github.com/CRideTGen/q2-pan-classifier
 
-cd PanViral/PanFlaviTutorial
+cd test_analysis
 ```
 
-The reference sequences to used are based on the flaviviruses described in Moureau et al. 2015 (https://doi.org/10.1371/journal.pone.0117849). The sequences are found in the directory **example_viral_db** in the file ***moureau_2015_ref_sequences.fasta***
 
-The example samples were produced from mosquito samples using the pan-flavi primer set described in Vina-Rodriguez et al. 2017 (https://doi.org/10.1155/2017/4248756). The primer name and sequence found in the table below:
-
+## Primers Used
 | Primer Name | Sequence             |                 
 |-------------| ---------------------|
 | forward     | CAAGCACTTCTGTTTCCCCGG|
@@ -88,9 +60,9 @@ The example samples were produced from mosquito samples using the pan-flavi prim
 1. ### Retrieve Reference Sequences
 
 ```bash
-   qiime rescript get-ncbi-data \ 
-       --p-query "[Flaviviridae[ORGANISM] AND 5000:10000000[SLEN]" \
-       --output-dir refrences
+   qiime rescript get-ncbi-data \
+       --p-query "Picornaviridae[ORGANISM] AND 5000:10000000[SLEN]" \
+       --output-dir references
 ```
 
      
@@ -99,17 +71,18 @@ The example samples were produced from mosquito samples using the pan-flavi prim
 
 ```bash
   qiime feature-classifier extract-reads \
-      --i-sequences refrences/sequences.qza \
-      --p-f-primer TACAACATGATGGGAAAGAGAGAGAARAA \
-      --p-r-primer GTGTCCCAKCCRGCTGTGTCATC \
-      --p-min-length 200 --p-max-length 300 \
-      --o-reads refrences/sequences_trimmed.qza
+      --i-sequences references/sequences.qza \
+      --p-f-primer CAAGCACTTCTGTTTCCCCGG \
+      --p-r-primer ATTGTCACCATAAGCAGCCA \
+      --p-min-length 0 --p-max-length 500 \
+      --o-reads references/sequences_trimmed.qza
   
   qiime rescript dereplicate \
-      --i-sequences sequences_trimmed.qza \
-      --i-taxa taxonomy.qza --p-derep-prefix \
-      --o-dereplicated-sequences sequences_dereplicated.qza \
-      --o-dereplicated-taxa taxonomy_dereplicated.qza
+      --i-sequences references/sequences_trimmed.qza \
+      --i-taxa references/taxonomy.qza \
+      --p-derep-prefix \
+      --o-dereplicated-sequences references/sequences_dereplicated.qza \
+      --o-dereplicated-taxa references/taxonomy_dereplicated.qza
 ```
 
       
@@ -117,9 +90,9 @@ The example samples were produced from mosquito samples using the pan-flavi prim
 3. ### Train Classifier
 
 ```bash
-  qiime rescript evaluate-fit-classifier 
-      --i-sequences refrences/sequences_dereplicated.qza 
-      --i-taxonomy refrences/taxonomy_dereplicated.qza 
+  qiime rescript evaluate-fit-classifier \
+      --i-sequences references/sequences_dereplicated.qza \
+      --i-taxonomy references/taxonomy_dereplicated.qza \
       --output-dir classifier
 ```
 
@@ -135,7 +108,6 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 ## Preparing Sequences
 
 
-
 1. ### Importing Sequences into Qiime2
 
    1. #### Create manifest file
@@ -146,11 +118,11 @@ We will be using the classifier generated in part1 to classify the 5 example sam
    The make_manifest_file.sh bash script will be used to generate your manifest:
 
    ```bash
-   bash ./scripts/make_manifest_file.sh -d example_sequences -o panflavi_manifest
+   bash ./scripts/make_manifest_file.sh -d example_sequences -o entero_manifest
    
    #check the generated manifest file
    
-   cat panflavi_manifest | column -t
+   cat entero_manifest | column -t
    ```
 
    
@@ -162,8 +134,8 @@ We will be using the classifier generated in part1 to classify the 5 example sam
     
    qiime tools import \
      --type 'SampleData[PairedEndSequencesWithQuality]' \
-     --input-path panflavi_manifest \
-     --output-path paired_end_demux_panflavi.qza \
+     --input-path entero_manifest \
+     --output-path paired_end_demux_entero.qza \
      --input-format PairedEndFastqManifestPhred33V2
    ```
 
@@ -184,10 +156,10 @@ We will be using the classifier generated in part1 to classify the 5 example sam
          cutadapt will trim off the primers by matching the supplied primer sequences to the first 30bp of the sequencing reads.
    ```bash
     qiime cutadapt trim-paired \
-      --i-demultiplexed-sequences paired_end_demux_panflavi.qza \
-      --p-front-f TACAACATGATGGGAAAGAGAGAGAARAA \
-      --p-front-r GTGTCCCAKCCRGCTGTGTCATC \
-      --o-trimmed-sequences paired_end_demux_panflavi_trimmed.qza
+      --i-demultiplexed-sequences paired_end_demux_entero.qza \
+      --p-front-f CAAGCACTTCTGTTTCCCCGG \
+      --p-front-r ATTGTCACCATAAGCAGCCA \
+      --o-trimmed-sequences paired_end_demux_entero_trimmed.qza
    ```
 
 4. ### Visualization of sequence quality
@@ -203,8 +175,8 @@ We will be using the classifier generated in part1 to classify the 5 example sam
    
    #creating visualization   
    qiime demux summarize \
-        --i-data paired_end_demux_panflavi_trimmed.qza \
-        --o-visualization visual_output/demux_panflavi.qzv
+        --i-data paired_end_demux_entero_trimmed.qza \
+        --o-visualization visual_output/demux_entero.qzv
    ```
 
             To visualize the .qzv file you have to visit https://view.qiime2.org/
@@ -219,14 +191,14 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
       ```
       qiime dada2 denoise-paired \
-           --i-demultiplexed-seqs paired_end_demux_panflavi_trimmed.qza \
+           --i-demultiplexed-seqs paired_end_demux_entero_trimmed.qza \
            --p-trim-left-f 0 \
            --p-trim-left-r 0 \
            --p-trunc-len-f 245 \
            --p-trunc-len-r 100 \
-           --o-representative-sequences rep_seqs_dada2_panflavi.qza \
-           --o-table table_dada2_panflavi.qza \
-           --o-denoising-stats stats_dada2_panflavi.qza
+           --o-representative-sequences rep_seqs_dada2_entero.qza \
+           --o-table table_dada2_entero.qza \
+           --o-denoising-stats stats_dada2_entero.qza
       
       ```
 
@@ -241,7 +213,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 6. ### Generate Metadata file using Keemei  
 
    1. See instructions on the qiime2 website: https://docs.qiime2.org/2021.4/tutorials/metadata/
-   2. save file as ***panflavi_meta.tsv***
+   2. save file as ***entero_meta.tsv***
 
    
 
@@ -249,13 +221,13 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
    1. ```bash
       qiime feature-table summarize \
-        --i-table table_dada2_panflavi.qza \
-        --o-visualization visual_output/table_panflavi.qzv \
-        --m-sample-metadata-file panflavi_meta.tsv
+        --i-table table_dada2_entero.qza \
+        --o-visualization visual_output/table_entero.qzv \
+        --m-sample-metadata-file entero_meta.tsv
       
       qiime feature-table tabulate-seqs \
-        --i-data rrep_seqs_dada2_panflavi.qza \
-        --o-visualization visual_output/rep_seqs_panflavi.qzv
+        --i-data rrep_seqs_dada2_entero.qza \
+        --o-visualization visual_output/rep_seqs_entero.qzv
         
       ```
 
@@ -267,9 +239,9 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
    1. ```bash
       qiime feature-classifier classify-sklearn   \
-      --i-classifier classifier/panflavi_classifier.qza  \
-       --i-reads rep_seqs_dada2_panflavi.qza   \
-       --o-classification taxonomy_panflavi.qza
+      --i-classifier classifier/entero_classifier.qza  \
+       --i-reads rep_seqs_dada2_entero.qza   \
+       --o-classification taxonomy_entero.qza
       ```
 
       
@@ -280,10 +252,10 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
    2. ```bash
        qiime taxa barplot \
-       --i-table table_dada2_panflavi.qza \ 
-       --i-taxonomy taxonomy_panflavi.qza \
-       --m-metadata-file panflavi_meta.tsv \
-       --o-visualization visual_ouput/taxa_bar_plots_panflavi.qzv
+       --i-table table_dada2_entero.qza \ 
+       --i-taxonomy taxonomy_entero.qza \
+       --m-metadata-file entero_meta.tsv \
+       --o-visualization visual_ouput/taxa_bar_plots_entero.qzv
       
       ```
 
@@ -296,8 +268,8 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
    ```bash
    qiime feature-table transpose 
-     --i-table table_dada2_panflavi.qza \
-     --o-transposed-feature-table transposed_table_dada2_panflavi.qza \
+     --i-table table_dada2_entero.qza \
+     --o-transposed-feature-table transposed_table_dada2_entero.qza \
    
    ```
 
@@ -305,9 +277,9 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
    ```bash
    qiime metadata tabulate 
-     --m-input-file taxonomy_panflavi.qza \
-     --m-input-file rep_seqs_dada2_panflavi.qza \
-     --m-input-file transposed_table_dada2_panflavi.qza \
+     --m-input-file taxonomy_entero.qza \
+     --m-input-file rep_seqs_dada2_entero.qza \
+     --m-input-file transposed_table_dada2_entero.qza \
      --o-visualization visual_output/feat-tax-rep.qzv
    ```
 
