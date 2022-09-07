@@ -4,14 +4,7 @@
  ## Making classifier
  pan-flavivirus analysis, here are the primers: PFlav-fAAR (TACAACATGATGGGAAAGAGAGAGAARAA from 9040 to 9068 of AF196835) and PFlav-rKR (GTGTCCCAKCCRGCTGTGTCATC from positions 9305 to 9283 of AF196835
  
- ```{bash}
- 
- qiime rescript get-ncbi-data --p-query "[Flaviviridae[ORGANISM] AND 5000:10000000[SLEN]" --output-dir refrences
- qiime feature-classifier extract-reads --i-sequences refrences/sequences.qza --p-f-primer TACAACATGATGGGAAAGAGAGAGAARAA --p-r-primer GTGTCCCAKCCRGCTGTGTCATC --p-min-length 200 --p-max-length 300 --o-reads refrences/sequences_trimmed.qza
- qiime rescript dereplicate --i-sequences sequences_trimmed.qza --i-taxa taxonomy.qza --p-derep-prefix --o-dereplicated-sequences sequences_dereplicated.qza --o-dereplicated-taxa taxonomy_dereplicated.qza
- 
- qiime rescript evaluate-fit-classifier --i-sequences refrences/sequences_dereplicated.qza --i-taxonomy refrences/taxonomy_dereplicated.qza --output-dir classifier
- ```
+
  
  Untrimmed references count: 25086
  trimmed references count: 17241
@@ -83,55 +76,52 @@ The reference sequences to used are based on the flaviviruses described in Moure
 
 The example samples were produced from mosquito samples using the pan-flavi primer set described in Vina-Rodriguez et al. 2017 (https://doi.org/10.1155/2017/4248756). The primer name and sequence found in the table below:
 
-| Primer Name | Sequence                              | Location in Genome (AF196835) |
-| ----------- | ------------------------------------- | ----------------------------- |
-| PFlav-fAAR  | TACAACATGATGGGAAAG**A**GAGAGAA**R**AA | 9040 -- 9068                  |
-| PFlav-rKR   | GTGTCCCA**K**CC**R**GC**T**GTGTCATC   | 9305 -- 9283                  |
+| Primer Name | Sequence             |                 
+|-------------| ---------------------|
+| forward     | CAAGCACTTCTGTTTCCCCGG|
+| reverse     | ATTGTCACCATAAGCAGCCA |
 
 
 
 ## Part 1: Create Custom Classifier
 
-1. ### Import Reference Sequences
+1. ### Retrieve Reference Sequences
 
-   1. ```bash
-      qiime tools import \
-        --type 'FeatureData[Sequence]' \
-        --input-path example_viral_db/moureau_2015_ref_sequences.fastjka \
-        --output-path classifier/panflavi_ref_sequences.qza
-      
-      qiime tools import \
-        --type 'FeatureData[Taxonomy]' \
-        --input-format HeaderlessTSVTaxonomyFormat \
-        --input-path example_viral_db/moureau_2015_taxonomy.tsv \
-        --output-path classifier/panflavi_ref_taxonomy.qza
-      ```
+```bash
+   qiime rescript get-ncbi-data \ 
+       --p-query "[Flaviviridae[ORGANISM] AND 5000:10000000[SLEN]" \
+       --output-dir refrences
+```
+
+     
 
 2. ### Extract Reference Reads
 
-   1. ```bash
-      qiime feature-classifier extract-reads \
-        --i-sequences classifier/panflavi_ref_sequences.qza \
-        --p-f-primer TACAACATGATGGGAAAGAGAGAGAARAA \
-        --p-r-primer GTGTCCCAKCCRGCTGTGTCATC \
-        --p-min-length 200 \
-        --p-max-length 300 \
-        --o-reads classifier/panflavi_ref_seqs_redueced.qza
-      ```
+```bash
+  qiime feature-classifier extract-reads \
+      --i-sequences refrences/sequences.qza \
+      --p-f-primer TACAACATGATGGGAAAGAGAGAGAARAA \
+      --p-r-primer GTGTCCCAKCCRGCTGTGTCATC \
+      --p-min-length 200 --p-max-length 300 \
+      --o-reads refrences/sequences_trimmed.qza
+  
+  qiime rescript dereplicate \
+      --i-sequences sequences_trimmed.qza \
+      --i-taxa taxonomy.qza --p-derep-prefix \
+      --o-dereplicated-sequences sequences_dereplicated.qza \
+      --o-dereplicated-taxa taxonomy_dereplicated.qza
+```
 
       
 
 3. ### Train Classifier
 
-   1. ```bash
-      qiime feature-classifier fit-classifier-naive-bayes \
-        --i-reference-reads classifier/panflavi_ref_seqs_redueced.qza \
-        --i-reference-taxonomy classifier/panflavi_ref_taxonomy.qza \
-        --o-classifier classifier/panflavi_classifier.qza
-      ```
-
-
-
+```bash
+  qiime rescript evaluate-fit-classifier 
+      --i-sequences refrences/sequences_dereplicated.qza 
+      --i-taxonomy refrences/taxonomy_dereplicated.qza 
+      --output-dir classifier
+```
 
 
 ## Part 2: Classifying Samples
