@@ -213,7 +213,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 6. ### Generate Metadata file using Keemei  
 
    1. See instructions on the qiime2 website: https://docs.qiime2.org/2021.4/tutorials/metadata/
-   2. save file as ***ENT_meta.tsv***
+   2. save file as ***ENTV_metadata.tsv***
 
    
 
@@ -223,7 +223,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
       qiime feature-table summarize \
         --i-table table_dada2_entero.qza \
         --o-visualization visual_output/table_entero.qzv \
-        --m-sample-metadata-file ENT_meta.tsv
+        --m-sample-metadata-file ENTV_metadata.tsv
       
       qiime feature-table tabulate-seqs \
         --i-data rep_seqs_dada2_entero.qza \
@@ -254,8 +254,8 @@ We will be using the classifier generated in part1 to classify the 5 example sam
        qiime taxa barplot \
        --i-table table_dada2_entero.qza \
        --i-taxonomy taxonomy_entero.qza \
-       --m-metadata-file ENT_meta.tsv \
-       --o-visualization visual_ouput/taxa_bar_plots_entero.qzv
+       --m-metadata-file ENTV_metadata.tsv \
+       --o-visualization visual_output/taxa_bar_plots_entero.qzv
       
       ```
 
