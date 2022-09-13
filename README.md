@@ -194,8 +194,8 @@ We will be using the classifier generated in part1 to classify the 5 example sam
            --i-demultiplexed-seqs paired_end_demux_entero_trimmed.qza \
            --p-trim-left-f 0 \
            --p-trim-left-r 0 \
-           --p-trunc-len-f 170 \
-           --p-trunc-len-r 160 \
+           --p-trunc-len-f 200 \
+           --p-trunc-len-r 200 \
            --o-representative-sequences rep_seqs_dada2_entero.qza \
            --o-table table_dada2_entero.qza \
            --o-denoising-stats stats_dada2_entero.qza
@@ -252,7 +252,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
    2. ```bash
        qiime taxa barplot \
-       --i-table table_dada2_entero.qza \ 
+       --i-table table_dada2_entero.qza \
        --i-taxonomy taxonomy_entero.qza \
        --m-metadata-file entero_meta.tsv \
        --o-visualization visual_ouput/taxa_bar_plots_entero.qzv
@@ -267,7 +267,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
      feature-table transpose command:
 
    ```bash
-   qiime feature-table transpose 
+   qiime feature-table transpose \
      --i-table table_dada2_entero.qza \
      --o-transposed-feature-table transposed_table_dada2_entero.qza \
    
