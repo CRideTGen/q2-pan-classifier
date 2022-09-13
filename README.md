@@ -239,7 +239,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
    1. ```bash
       qiime feature-classifier classify-sklearn   \
-      --i-classifier classifier/entero_classifier.qza  \
+      --i-classifier ../classifier/classifier.qza  \
        --i-reads rep_seqs_dada2_entero.qza   \
        --o-classification taxonomy_entero.qza
       ```
