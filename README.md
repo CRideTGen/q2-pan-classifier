@@ -276,7 +276,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
    Now we generate the table:
 
    ```bash
-   qiime metadata tabulate 
+   qiime metadata tabulate \
      --m-input-file taxonomy_entero.qza \
      --m-input-file rep_seqs_dada2_entero.qza \
      --m-input-file transposed_table_dada2_entero.qza \
