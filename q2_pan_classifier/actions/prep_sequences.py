@@ -15,6 +15,7 @@ def _return_manifest_sample_string_(file_path_names: str) -> str:
     # 3. finish _get_forward_reverse_ function, this will also check if name is unique
     # 4. Have function return string for all samples in manifest
     #
+    PAIRED_END_REGEX = r'(.+)_.+_L[0-9][0-9][0-9]_R[12]_.+\.fastq.*'
 
     names_raw = [os.path.basename(x) for x in file_path_names]
 
@@ -22,9 +23,10 @@ def _return_manifest_sample_string_(file_path_names: str) -> str:
 
     for full_name in names_raw:
         try:
-            name = re.search(r'(.+)_.+_L[0-9][0-9][0-9]_R[12]_.+\.fastq.*', full_name).group(1)
+            name = re.search(PAIRED_END_REGEX, full_name).group(1)
             names_out.append(name)
         except AttributeError:
+            #TODO Handle mismatch case
             print(f"{full_name} did not match fastq naming scheme")
     return names_out
 
