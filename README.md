@@ -54,8 +54,17 @@ cd test_analysis
 | reverse     | ATTGTCACCATAAGCAGCCA |
 
 
+## Set Monsoon Environment
+
+```bash
+   export TMPDIR=/scratch/sps266/tmp
+   module load anaconda3
+   conda activate qiime2-2022.8
+```
+
 
 ## Part 1: Create Custom Classifier
+
 
 1. ### Retrieve Reference Sequences
 
