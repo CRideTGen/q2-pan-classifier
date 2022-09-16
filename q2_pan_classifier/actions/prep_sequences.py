@@ -2,9 +2,27 @@ import os
 import re
 import tempfile
 from pathlib import Path
+from typing import Protocol
+
 import qiime2
 from q2_types.per_sample_sequences import SingleLanePerSamplePairedEndFastqDirFmt, PairedEndSequencesWithQuality
 from q2_types.sample_data import SampleData
+class SampleManifest(Protocol):
+    sample_name: str
+    sample_path: tuple
+
+class PairedReads:
+    def __init__(self, sample_name, sample_path=None, forward=None, reverse=None):
+        self.sample_name = sample_name
+        if sample_path and (forward or reverse):
+            raise ValueError("Need sample_path or forward and reverse, NOT both")
+        elif sample_path:
+            self.sample_path = tuple(sample_path)
+        elif forward and reverse:
+            self.sample_path = tuple([forward, reverse])
+        else:
+            raise ValueError("Missing forward or reverse path")
+
 
 def _get_forward_reverse_(name: str, file_names: list) -> tuple:
     pass
