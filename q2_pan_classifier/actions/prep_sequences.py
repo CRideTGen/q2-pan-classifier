@@ -8,8 +8,11 @@ import qiime2
 from q2_types.per_sample_sequences import SingleLanePerSamplePairedEndFastqDirFmt, PairedEndSequencesWithQuality
 from q2_types.sample_data import SampleData
 class SampleManifest(Protocol):
-    sample_name: str
-    sample_path: tuple
+    _sample_name: str
+    _sample_path: SamplePath
+
+    def get_sample_manifest_str(self):
+        ...
 
 class PairedReads:
     def __init__(self, sample_name, sample_path=None, forward=None, reverse=None):
@@ -23,11 +26,43 @@ class PairedReads:
         else:
             raise ValueError("Missing forward or reverse path")
 
+    def get_paired_sample_name(self) -> str:
+        PAIRED_END_REGEX = r'(.+)_.+_L[0-9][0-9][0-9]_R[12]_.+\.fastq.*'
+        name = re.search(PAIRED_END_REGEX, self._sample_path.forward).group(1)
 
-def _get_forward_reverse_(name: str, file_names: list) -> tuple:
-    pass
-def _return_manifest_sample_string_(file_path_names: str) -> str:
-    #TODO
+        return name
+
+    def get_sample_manifest_str(self):
+        return f"{self._sample_name}\t{self._sample_path.forward}\t{self._sample_path.reverse}\n"
+
+
+class SingleRead:
+    def __init__(self, sample_name, sample_path):
+        if sample_path:
+            self._sample_name = sample_name
+            self._sample_path = sample_path
+        else:
+            raise ValueError("Missing forward or reverse path")
+
+    def get_sample_manifest_str(self):
+        pass
+
+
+def _get_forward_reverse_(name: str, file_names: list) -> PairedReads:
+    PAIRED_END_FORWARD_REGEX = f'{name}_.+_L[0-9][0-9][0-9]_R1_.+\.fastq.*'
+    PAIRED_END_REVERSE_REGEX = f'{name}_.+_L[0-9][0-9][0-9]_R2_.+\.fastq.*'
+
+    forward = [f_name for f_name in file_names if re.search(PAIRED_END_FORWARD_REGEX, f_name.name)]
+    reverse = [r_name for r_name in file_names if re.search(PAIRED_END_REVERSE_REGEX, r_name.name)]
+
+    if len(forward) == 1 and len(reverse) == 1:
+        return PairedReads(sample_name=name, forward=forward, reverse=reverse)
+    else:
+        raise ValueError("Did not have matching pair")
+
+
+def _return_manifest_sample_(sample_dir: Path) -> List[PairedReads]:
+    # TODO
     # 1. Change name from _return_names_
     # 2. error handle regex mismatched name
     # 3. finish _get_forward_reverse_ function, this will also check if name is unique
@@ -63,7 +98,7 @@ def _generate_manifest_file_(sample_dir_path: str, manifest_file_dir: str) -> st
         #TODO Write output from  _return_manifest_sample_string_
         #manifest_file.write(sample_manifest_string)
 
-    return os.path.join(manifest_file_dir)
+    return manifest_file_path
 
 def import_reads(sequence_directory: str) -> SingleLanePerSamplePairedEndFastqDirFmt:
 
@@ -81,3 +116,16 @@ def import_reads(sequence_directory: str) -> SingleLanePerSamplePairedEndFastqDi
                                         view_type='PairedEndFastqManifestPhred33V2')
     reads.export_data(output_dir.path)
     return output_dir
+
+
+def seq_func(input_man: SampleManifest):
+    return input_man.get_sample_manifest_str()
+
+
+def main():
+    x = PairedReads(sample_name="test", forward="./forward.fastq.gz", reverse="./reverse.fastq.gz")
+    print(seq_func(input_man=x))
+
+
+if __name__ == "__main__":
+    main()
