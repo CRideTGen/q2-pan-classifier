@@ -1,0 +1,7 @@
+query_string: "Picornaviridae[ORGANISM] AND 5000:10000000[SLEN]"
+forward_primer: "CAAGCACTTCTGTTTCCCCGG"
+reverse_primer: "ATTGTCACCATAAGCAGCCA"
+min_length: "0"
+max_length: "500"
+trunc_len_f: "200"
+trunc_len_r: "200"
