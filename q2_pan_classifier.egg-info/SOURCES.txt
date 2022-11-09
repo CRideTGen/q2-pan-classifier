@@ -21,5 +21,7 @@ q2_pan_classifier/actions/name_to_accessions.py
 q2_pan_classifier/actions/prep_sequences.py
 q2_pan_classifier/actions/helper_functions/__init__.py
 q2_pan_classifier/actions/helper_functions/helper_functions.py
+q2_pan_classifier/scripts/__init__.py
+q2_pan_classifier/scripts/scratch_new.py
 q2_pan_classifier/types_formats/__init__.py
 q2_pan_classifier/types_formats/types_and_formats.py
