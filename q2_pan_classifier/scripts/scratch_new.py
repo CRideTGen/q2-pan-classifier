@@ -32,21 +32,48 @@ args = parser.parse_args()
 def main():
     with open(args.config, 'r') as cf:
         config_loaded = yaml.safe_load(cf)
-        manifest_file = config_loaded['manifest_path']
+        manifest_file_path = config_loaded['manifest_path']
+        metadata_path = config_loaded['metadata_path']
+        metadata = Metadata.load(metadata_path)
+        classifier_path = config_loaded['classifier_path']
+        classifier = qiime2.Artifact.load(classifier_path)
         forward_primer = config_loaded['forward_primer']
         reverse_primer = config_loaded['reverse_primer']
+        trunc_len_f = config_loaded['trunc_len_f']
+        trunc_len_r = config_loaded['trunc_len_r']
 
-        viral_sequences = import_viral_sequences(manifest_file)
-
+        viral_sequences = import_viral_sequences(manifest_file_path)
         click.echo(viral_sequences)
 
-        trimmed_sequences = trim_sequences(viral_sequences, [forward_primer], [reverse_primer])
-
+        trimmed_sequences, = trim_sequences(viral_sequences, [forward_primer], [reverse_primer])
         click.echo(trimmed_sequences)
 
+        visual_out = visualize_sequence_quality(trimmed_sequences)
+        click.echo(visual_out)
 
+        table, rep_seqs, stats = cluster_sequences(trimmed_sequences, int(trunc_len_f), int(trunc_len_r))
+        click.echo(table)
+        click.echo(rep_seqs)
+        click.echo(stats)
 
+        visualization, tabulate = visualize_feature_table(table, rep_seqs, metadata)
+        click.echo(visualization)
+        click.echo(tabulate)
 
+        taxonomy, = classify_sequences(classifier, rep_seqs)
+        click.echo(taxonomy)
+
+        visualization_barplot = create_taxa_bar_plot(table, taxonomy, metadata)
+        click.echo(visualization_barplot)
+
+        transposed_table, = transpose_table(table)
+        click.echo(transposed_table)
+
+        #this one does not work
+        #tabulated_table = tabulate_table(taxonomy, rep_seqs, transposed_table)
+        #click.echo(tabulated_table)
+
+# first
 def import_viral_sequences(path_to_manifest_file: Path):
     viral_seq_art =qiime2.Artifact.import_data(type='SampleData[PairedEndSequencesWithQuality]',
                                         view=str(path_to_manifest_file),
@@ -62,13 +89,22 @@ def trim_sequences(demux_seqs: SampleData[PairedEndSequencesWithQuality], forwar
 
     return trimmed_seqs
 
+# third
+def visualize_sequence_quality(trimmed_demux_seqs: SampleData[PairedEndSequencesWithQuality]):
+    visual_out = demux_summarize(
+        data=trimmed_demux_seqs
+    )
+
+    return visual_out
+
+# fourth
 def cluster_sequences(demux_seqs: SampleData[PairedEndSequencesWithQuality], trunc_f: int, trunc_r: int):
     table, rep_seqs, stats = dada2_actions.denoise_paired(
         demultiplexed_seqs=demux_seqs,
         trim_left_f=0,
         trim_left_r=0,
-        trunc_len_f=trunc_r,
-        trunc_len_r=trunc_f
+        trunc_len_f=trunc_f,
+        trunc_len_r=trunc_r
     )
 
     return table, rep_seqs, stats
