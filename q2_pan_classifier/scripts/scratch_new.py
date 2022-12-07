@@ -22,7 +22,6 @@ from qiime2.plugins.metadata.visualizers import tabulate
 
 
 
-
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-c", '--config', required=True)
@@ -69,9 +68,13 @@ def main():
         transposed_table, = transpose_table(table)
         click.echo(transposed_table)
 
-        #this one does not work
-        #tabulated_table = tabulate_table(taxonomy, rep_seqs, transposed_table)
-        #click.echo(tabulated_table)
+        tabulated_table = tabulate_table(taxonomy, rep_seqs, transposed_table)
+        click.echo(tabulated_table)
+
+        ### TODO: Notes
+        # create a output directory:
+        #   visualations_output
+        #   flag to save other earlier output
 
 # first
 def import_viral_sequences(path_to_manifest_file: Path):
@@ -151,11 +154,16 @@ def transpose_table(table: FeatureTable[Frequency]):
 
     return transposed_table
 
-def tabulate_table(taxonomy: FeatureData[Taxonomy], rep_seqs:FeatureData[Sequence], transposed_table: FeatureTable[Frequency]):
+# ninth
+def tabulate_table(taxonomy: FeatureData[Taxonomy], rep_seqs: FeatureData[Sequence],
+                   transposed_table: FeatureTable[Frequency]):
+    table_m = transposed_table.view(view_type=Metadata)
+    tax_m = taxonomy.view(view_type=Metadata)
+    rep_m = rep_seqs.view(view_type=Metadata)
+
+    merged = tax_m.merge(rep_m, table_m)
     visualization = tabulate(
-        taxonomy,
-        rep_seqs,
-        transposed_table
+        input=merged
     )
 
     return visualization
