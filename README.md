@@ -292,4 +292,52 @@ We will be using the classifier generated in part1 to classify the 5 example sam
      --o-visualization visual_output/feat-tax-rep.qzv
    ```
 
+# scratch_new Script File Usage
+
+   This script has been created with the hopes of streamlining the qiime2 analysis
+   of viral samples. These commands are the same exact commands that are run through the command line 
+   interface seen above, just in python.
+
+## Configuration File
+   This pipeline uses a config.yaml file in order to configure the commands before running them.
+        The config.yaml file has a specific format, which is: <br> 
+            ```
+            variable: "value"
+            ```
+
+   The config file contains many variables that are required to run this pipeline.
+   These are all of the necessary fields in order to run this script:
+```
+   manifest_path
+   metadata_path
+   classifier_path
+   query_string
+   forward_primer
+   reverse_primer
+   min_length
+   max_length
+   trunc_len_f
+   trunc_len_r
+```
+   1. Manifest Path: File path to the manifest file, see [Create Manifest File](#create-manifest-file) for more information.
+   2. Metadata Path: File path to the metadata file, see [Generate Metadata File](#generate-metadata-file-using-keemei) for more information. 
+   3. Classifier Path: File path to the classifier, see [Create Custom Classifier](#part-1-create-custom-classifier) for more information.
+   4. Query String: The NCBI query string to be used. 
+   If trunc_len_f or trunc_len_r is not provided, the analysis will stop before it
+   clusters the sequences with DADA2.
+   5. Forward Primer: Forward primer to be used on these sequences
+   6. Reverse Primer: Reverse primer to be used on these sequences
+   7. Min Length: Will filter reads with a length shorter than this
+   8. Max Length: Will filter reads with a length longer than this
+   9. Trunc Len F: Truncates all of the bases after the base given for the forward reads
+   10. Trunc Len R: Truncates all of the bases after the base given for the reverse reads
+
+## Running the Script
+The script is ran with the use of positional arguments. The argument "-c" is necessary
+to provide the script with the path to the configuration .yaml file. The configuration file
+is the only thing needed to run this script. 
+
+
+
+
    

@@ -41,132 +41,72 @@ def main():
         trunc_len_f = config_loaded['trunc_len_f']
         trunc_len_r = config_loaded['trunc_len_r']
 
-        viral_sequences = import_viral_sequences(manifest_file_path)
-        click.echo(viral_sequences)
+        # make the output directories if they do not exist
+        if not os.path.isdir(output_dir):
+            os.mkdir(output_dir)
+            os.mkdir(visual_output_dir)
 
+        viral_sequences = import_viral_sequences(manifest_file_path)
+        #click.echo(viral_sequences)
+        #viral_sequences.save(output_dir + "/visual_output/viral_sequences.qza")
+
+
+        # TODO: log the ones that are trimmed
+        # will go into the database
         trimmed_sequences, = trim_sequences(viral_sequences, [forward_primer], [reverse_primer])
         click.echo(trimmed_sequences)
+        #trimmed_sequences.save(output_dir + "/visual_output/paired_end_demux_trimmed.qza")
+
 
         visual_out = visualize_sequence_quality(trimmed_sequences)
         click.echo(visual_out)
+        #visual_out.save(output_dir + "/visual_output/demux_visual_out.qza")
 
-        table, rep_seqs, stats = cluster_sequences(trimmed_sequences, int(trunc_len_f), int(trunc_len_r))
-        click.echo(table)
-        click.echo(rep_seqs)
-        click.echo(stats)
+        # check if the truncate length forward and reverse are given, run if they are.
+        if(trunc_len_r != "" and trunc_len_f != ""):
+            table, rep_seqs, stats = cluster_sequences(trimmed_sequences, int(trunc_len_f), int(trunc_len_r))
+            click.echo(table)
+            click.echo(rep_seqs)
+            click.echo(stats)
+            #table.save(output_dir + "/visual_output/table_dada2.qza")
+            #rep_seqs.save(output_dir + "/visual_output/representative_sequences.qza")
+            #stats.save(output_dir + "/visual_output/stats_dada2.qza")
 
-        visualization, tabulate = visualize_feature_table(table, rep_seqs, metadata)
-        click.echo(visualization)
-        click.echo(tabulate)
 
-        taxonomy, = classify_sequences(classifier, rep_seqs)
-        click.echo(taxonomy)
+            visualization, tabulate = visualize_feature_table(table, rep_seqs, metadata)
+            click.echo(visualization)
+            click.echo(tabulate)
+            #visualization.save(output_dir + "/visual_output/table_summarize.qza")
+            #tabulate.save(output_dir + "/visual_output/tabulate_rep_seqs.qza")
 
-        visualization_barplot = create_taxa_bar_plot(table, taxonomy, metadata)
-        click.echo(visualization_barplot)
 
-        transposed_table, = transpose_table(table)
-        click.echo(transposed_table)
+            taxonomy, = classify_sequences(classifier, rep_seqs)
+            click.echo(taxonomy)
+            #taxonomy.save(output_dir + "/visual_output/taxonomy.qza")
 
-        tabulated_table = tabulate_table(taxonomy, rep_seqs, transposed_table)
-        click.echo(tabulated_table)
+            visualization_barplot = create_taxa_bar_plot(table, taxonomy, metadata)
+            click.echo(visualization_barplot)
+            #visualization_barplot.save(output_dir + "/visual_output/taxa_bar_plot.qza")
+
+
+            transposed_table, = transpose_table(table)
+            click.echo(transposed_table)
+            #transposed_table.save(output_dir + "/visual_output/transposed_table.qza")
+
+
+            tabulated_table = tabulate_table(taxonomy, rep_seqs, transposed_table)
+            click.echo(tabulated_table)
+            #tabulated_table.save(output_dir + "/visual_output/tabulated_table.qza")
+
+
+        else:
+            click.echo("\nTruncate length forward and reverse were not given.\n"
+                       "Analysis stopped at the clustering of sequences.\n")
 
         ### TODO: Notes
         # create a output directory:
         #   visualations_output
         #   flag to save other earlier output
-
-# first
-def import_viral_sequences(path_to_manifest_file: Path):
-    viral_seq_art =qiime2.Artifact.import_data(type='SampleData[PairedEndSequencesWithQuality]',
-                                        view=str(path_to_manifest_file),
-                                        view_type='PairedEndFastqManifestPhred33V2')
-    return viral_seq_art
-
-def trim_sequences(demux_seqs: SampleData[PairedEndSequencesWithQuality], forward_primer: list, reverse_primer: list):
-    trimmed_seqs = trim_paired(
-        demultiplexed_sequences=demux_seqs,
-        front_f=forward_primer,
-        front_r=reverse_primer
-    )
-
-    return trimmed_seqs
-
-# third
-def visualize_sequence_quality(trimmed_demux_seqs: SampleData[PairedEndSequencesWithQuality]):
-    visual_out = demux_summarize(
-        data=trimmed_demux_seqs
-    )
-
-    return visual_out
-
-# fourth
-def cluster_sequences(demux_seqs: SampleData[PairedEndSequencesWithQuality], trunc_f: int, trunc_r: int):
-    table, rep_seqs, stats = dada2_actions.denoise_paired(
-        demultiplexed_seqs=demux_seqs,
-        trim_left_f=0,
-        trim_left_r=0,
-        trunc_len_f=trunc_f,
-        trunc_len_r=trunc_r
-    )
-
-    return table, rep_seqs, stats
-
-def visualize_sequence_quality(trimmed_demux_seqs: SampleData[PairedEndSequencesWithQuality]):
-    visual_out = demux_summarize(
-        data=trimmed_demux_seqs
-    )
-
-    return visual_out
-
-def visualize_feature_table(table: FeatureTable[Frequency], rep_seqs:FeatureData[Sequence], metadata: Metadata):
-    visualization = table_summarize(
-        table=table,
-        sample_metadata=metadata
-    )
-
-    tabulate = tabulate_seqs(
-        data=rep_seqs
-    )
-    return visualization, tabulate
-
-def classify_sequences(classifier: TaxonomicClassifier, rep_seqs:FeatureData[Sequence]):
-    taxonomy = classify_sklearn(
-        classifier=classifier,
-        reads=rep_seqs
-    )
-
-    return taxonomy
-
-def create_taxa_bar_plot(table: FeatureTable[Frequency], taxonomy: FeatureData[Taxonomy], metadata: Metadata):
-    visualization = barplot(
-        table=table,
-        taxonomy=taxonomy,
-        metadata=metadata
-    )
-
-    return visualization
-
-def transpose_table(table: FeatureTable[Frequency]):
-    transposed_table = transpose(
-        table=table
-    )
-
-    return transposed_table
-
-# ninth
-def tabulate_table(taxonomy: FeatureData[Taxonomy], rep_seqs: FeatureData[Sequence],
-                   transposed_table: FeatureTable[Frequency]):
-    table_m = transposed_table.view(view_type=Metadata)
-    tax_m = taxonomy.view(view_type=Metadata)
-    rep_m = rep_seqs.view(view_type=Metadata)
-
-    merged = tax_m.merge(rep_m, table_m)
-    visualization = tabulate(
-        input=merged
-    )
-
-    return visualization
 
 if __name__ == "__main__":
     main()
