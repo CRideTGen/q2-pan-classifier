@@ -29,6 +29,7 @@ parser.add_argument("-c", '--config', required=True)
 args = parser.parse_args()
 
 def main():
+    print("hello")
     with open(args.config, 'r') as cf:
         config_loaded = yaml.safe_load(cf)
         manifest_file_path = config_loaded['manifest_path']
