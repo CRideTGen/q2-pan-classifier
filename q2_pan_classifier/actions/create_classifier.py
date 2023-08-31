@@ -13,7 +13,6 @@
 #   limitations under the License.
 
 import pandas as pd
-
 import qiime2
 
 def generate_taxonomy(ref_seqs: pd.Series) -> list:
