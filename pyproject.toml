@@ -15,7 +15,7 @@ classifiers = [
 dynamic = ['version']
 
 [tool.setuptools.packages.find]
-where = ["q2_pan_classifier"]
+where = ["."]
 include = ["*"]  # package names should match these glob patterns (["*"] by default)
 exclude = ["data"]  # exclude packages matching these glob patterns (empty by default)
 namespaces = false  # to disable scanning PEP 420 namespaces (true by default)

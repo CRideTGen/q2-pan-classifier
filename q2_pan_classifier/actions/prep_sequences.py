@@ -5,8 +5,9 @@ from pathlib import Path
 from typing import Protocol
 
 import qiime2
-from q2_types.per_sample_sequences import SingleLanePerSamplePairedEndFastqDirFmt, PairedEndSequencesWithQuality
-from q2_types.sample_data import SampleData
+from q2_types.per_sample_sequences import SingleLanePerSamplePairedEndFastqDirFmt
+
+
 class SampleManifest(Protocol):
     _sample_name: str
     _sample_path: SamplePath
