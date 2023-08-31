@@ -1,132 +1,117 @@
 import os
-import re
 import tempfile
-from pathlib import Path
-from typing import Protocol
 
 import qiime2
-from q2_types.per_sample_sequences import SingleLanePerSamplePairedEndFastqDirFmt
+
+from q2_pan_classifier.actions.helper_functions.helper_functions import (
+    _get_cpus,
+    _generate_manifest_file_,
+    _write_metadata_template_,
+)
 
 
-class SampleManifest(Protocol):
-    _sample_name: str
-    _sample_path: SamplePath
+def prep_sequence_reads_paired(ctx, sequences=None, sequences_directory=None, metadata_template_dir=None, primer_f=None,
+                               primer_r=None):
+    results = []
 
-    def get_sample_manifest_str(self):
-        ...
+    # importing external plugins to be used later
 
-class PairedReads:
-    def __init__(self, sample_name, sample_path=None, forward=None, reverse=None):
-        self.sample_name = sample_name
-        if sample_path and (forward or reverse):
-            raise ValueError("Need sample_path or forward and reverse, NOT both")
-        elif sample_path:
-            self.sample_path = tuple(sample_path)
-        elif forward and reverse:
-            self.sample_path = tuple([forward, reverse])
-        else:
-            raise ValueError("Missing forward or reverse path")
+    create_table_viz = ctx.get_action('demux', 'summarize')
+    cut_adapt = ctx.get_action('cutadapt', 'trim_paired')
 
-    def get_paired_sample_name(self) -> str:
-        PAIRED_END_REGEX = r'(.+)_.+_L[0-9][0-9][0-9]_R[12]_.+\.fastq.*'
-        name = re.search(PAIRED_END_REGEX, self._sample_path.forward).group(1)
+    # importing sequences
 
-        return name
+    if sequences and sequences_directory:
+        raise ValueError("Please only provide a sequence qza or sequence_directory path not both.")
+    elif sequences:
+        read_seqs = sequences
 
-    def get_sample_manifest_str(self):
-        return f"{self._sample_name}\t{self._sample_path.forward}\t{self._sample_path.reverse}\n"
+    elif sequences_directory:
 
+        sequences_directory = os.path.abspath(sequences_directory)
+        temp_dir = tempfile.TemporaryDirectory()
 
-class SingleRead:
-    def __init__(self, sample_name, sample_path):
-        if sample_path:
-            self._sample_name = sample_name
-            self._sample_path = sample_path
-        else:
-            raise ValueError("Missing forward or reverse path")
+        manifest_file_path, names = _generate_manifest_file_(sequences_directory, temp_dir.name)
 
-    def get_sample_manifest_str(self):
-        pass
+        read_seqs = qiime2.Artifact.import_data(type='SampleData[PairedEndSequencesWithQuality]',
+                                                view=manifest_file_path,
+                                                view_type='PairedEndFastqManifestPhred33V2')
 
+        # write metadata template
+        _write_metadata_template_(sample_names=names, output_dir=metadata_template_dir)
 
-def _get_forward_reverse_(name: str, file_names: list) -> PairedReads:
-    PAIRED_END_FORWARD_REGEX = f'{name}_.+_L[0-9][0-9][0-9]_R1_.+\.fastq.*'
-    PAIRED_END_REVERSE_REGEX = f'{name}_.+_L[0-9][0-9][0-9]_R2_.+\.fastq.*'
-
-    forward = [f_name for f_name in file_names if re.search(PAIRED_END_FORWARD_REGEX, f_name.name)]
-    reverse = [r_name for r_name in file_names if re.search(PAIRED_END_REVERSE_REGEX, r_name.name)]
-
-    if len(forward) == 1 and len(reverse) == 1:
-        return PairedReads(sample_name=name, forward=forward, reverse=reverse)
     else:
-        raise ValueError("Did not have matching pair")
+        raise ValueError("Please provide either a sequence qza or sequence directory path"
+                         )
+
+    # using plugins to trim reads and create reads visualization
+
+    if primer_f and primer_r:
+        trimmed_reads = cut_adapt(demultiplexed_sequences=read_seqs,
+                                  front_f=[primer_f],
+                                  front_r=[primer_r],
+                                  cores=_get_cpus())
+
+        table_viz = create_table_viz(data=trimmed_reads.trimmed_sequences)
+
+        results += trimmed_reads
+
+    else:
+        table_viz = create_table_viz(data=read_seqs.trimmed_sequences)
+        results += [read_seqs]
+
+    results += table_viz
+
+    return tuple(results)
 
 
-def _return_manifest_sample_(sample_dir: Path) -> List[PairedReads]:
-    # TODO
-    # 1. Change name from _return_names_
-    # 2. error handle regex mismatched name
-    # 3. finish _get_forward_reverse_ function, this will also check if name is unique
-    # 4. Have function return string for all samples in manifest
-    #
-    PAIRED_END_REGEX = r'(.+)_.+_L[0-9][0-9][0-9]_R[12]_.+\.fastq.*'
+def prep_sequence_reads_single(ctx, sequences=None, sequences_directory=None, metadata_template_dir=None, primer_f=None,
+                               primer_r=None):
+    results = []
 
-    names_raw = [os.path.basename(x) for x in file_path_names]
+    # importing external plugins to be used later
+    cut_adapt = ctx.get_action('cutadapt', 'trim_single')
+    create_table_viz = ctx.get_action('demux', 'summarize')
 
-    names_out = list()
+    # importing sequences
 
-    for full_name in names_raw:
-        try:
-            name = re.search(PAIRED_END_REGEX, full_name).group(1)
-            names_out.append(name)
-        except AttributeError:
-            #TODO Handle mismatch case
-            print(f"{full_name} did not match fastq naming scheme")
-    return names_out
+    if sequences and sequences_directory:
+        raise ValueError("Please only provide a sequence qza or sequence_directory path not both.")
+    elif sequences:
+        read_seqs = sequences
 
-def _generate_manifest_file_(sample_dir_path: str, manifest_file_dir: str) -> str:
-    """Generates a manifest file in a temporary directory to be used in sequence reads upload"""
+    elif sequences_directory:
 
-    HEADER = ['sample-id', 'forward-absolute-filepath', 'reverse-absolute-filepath']
+        sequences_directory = os.path.abspath(sequences_directory)
+        temp_dir = tempfile.TemporaryDirectory()
 
-    #TODO
+        manifest_file_path, names = _generate_manifest_file_(sequences_directory, temp_dir.name)
 
-    sample_manifest_string = _return_manifest_sample_string_(sample_dir_path)
+        read_seqs = qiime2.Artifact.import_data(type='SampleData[PairedEndSequencesWithQuality]',
+                                                view=manifest_file_path,
+                                                view_type='PairedEndFastqManifestPhred33V2')
 
-    with open(os.path.join(manifest_file_dir, "manifest"), "w") as manifest_file:
+        # write metadata template
+        _write_metadata_template_(sample_names=names, output_dir=metadata_template_dir)
 
-        manifest_file.write('\t'.join(HEADER) + '\n')
-        #TODO Write output from  _return_manifest_sample_string_
-        #manifest_file.write(sample_manifest_string)
+    else:
+        raise ValueError("Please provide either a sequence qza or sequence directory path"
+                         )
 
-    return manifest_file_path
+    # using plugins to trim reads and create reads visualization
 
-def import_reads(sequence_directory: str) -> SingleLanePerSamplePairedEndFastqDirFmt:
+    if primer_f and primer_r and sequences:
+        trimmed_reads = cut_adapt(demultiplexed_sequences=read_seqs,
+                                  front=[primer_f, primer_r],
+                                  cores=_get_cpus())
 
-    output_dir = SingleLanePerSamplePairedEndFastqDirFmt()
+        table_viz = create_table_viz(data=trimmed_reads.trimmed_sequences)
 
-    sequence_directory = os.path.abspath(sequence_directory)
-    temp_dir = tempfile.TemporaryDirectory()
+        results += trimmed_reads
+    else:
+        table_viz = create_table_viz(data=read_seqs.trimmed_sequences)
+        results += [read_seqs]
 
-    manifest_file_path, names = _generate_manifest_file_(sequence_directory, "/home/cridenour/PycharmProjects/q2-pan-classifier/test_data/")
+    results += table_viz
 
-    # manifest_file_path = "/home/cridenour/PycharmProjects/q2-pan-classifier/test_data/MANIFEST"
-    #
-    reads = qiime2.Artifact.import_data(type='SampleData[PairedEndSequencesWithQuality]',
-                                        view=manifest_file_path,
-                                        view_type='PairedEndFastqManifestPhred33V2')
-    reads.export_data(output_dir.path)
-    return output_dir
-
-
-def seq_func(input_man: SampleManifest):
-    return input_man.get_sample_manifest_str()
-
-
-def main():
-    x = PairedReads(sample_name="test", forward="./forward.fastq.gz", reverse="./reverse.fastq.gz")
-    print(seq_func(input_man=x))
-
-
-if __name__ == "__main__":
-    main()
+    return tuple(results)
