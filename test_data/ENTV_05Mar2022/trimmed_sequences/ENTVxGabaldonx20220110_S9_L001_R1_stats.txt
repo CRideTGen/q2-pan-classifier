@@ -1,6 +1,0 @@
-#File	sequences//ENTVxGabaldonx20220110_S9_L001_R1_001.fastq.gz	sequences//ENTVxGabaldonx20220110_S9_L001_R2_001.fastq.gz
-#Total	248	62248
-#Matched	248	100.00000%
-#Name	Reads	ReadsPct	Bases	BasesPct
-f_primer	128	51.61290%	32000	51.40727%
-r_primer	120	48.38710%	30000	48.19432%

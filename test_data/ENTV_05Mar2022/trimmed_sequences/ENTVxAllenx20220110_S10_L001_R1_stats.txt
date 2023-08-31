@@ -1,6 +1,0 @@
-#File	sequences//ENTVxAllenx20220110_S10_L001_R1_001.fastq.gz	sequences//ENTVxAllenx20220110_S10_L001_R2_001.fastq.gz
-#Total	148	37148
-#Matched	148	100.00000%
-#Name	Reads	ReadsPct	Bases	BasesPct
-f_primer	78	52.70270%	19500	52.49273%
-r_primer	70	47.29730%	17500	47.10886%

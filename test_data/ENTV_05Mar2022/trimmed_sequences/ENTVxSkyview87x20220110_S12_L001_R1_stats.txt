@@ -1,6 +1,0 @@
-#File	sequences//ENTVxSkyview87x20220110_S12_L001_R1_001.fastq.gz	sequences//ENTVxSkyview87x20220110_S12_L001_R2_001.fastq.gz
-#Total	308	77308
-#Matched	308	100.00000%
-#Name	Reads	ReadsPct	Bases	BasesPct
-f_primer	163	52.92208%	40750	52.71123%
-r_primer	145	47.07792%	36250	46.89036%

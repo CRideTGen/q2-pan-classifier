@@ -1,6 +1,0 @@
-#File	sequences//ENTVxSuitesPineRidgex20211011_S2_L001_R1_001.fastq.gz	sequences//ENTVxSuitesPineRidgex20211011_S2_L001_R2_001.fastq.gz
-#Total	48	12048
-#Matched	48	100.00000%
-#Name	Reads	ReadsPct	Bases	BasesPct
-f_primer	24	50.00000%	6000	49.80080%
-r_primer	24	50.00000%	6000	49.80080%

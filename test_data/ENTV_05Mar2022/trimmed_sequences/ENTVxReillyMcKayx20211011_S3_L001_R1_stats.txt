@@ -1,6 +1,0 @@
-#File	sequences//ENTVxReillyMcKayx20211011_S3_L001_R1_001.fastq.gz	sequences//ENTVxReillyMcKayx20211011_S3_L001_R2_001.fastq.gz
-#Total	128	32128
-#Matched	128	100.00000%
-#Name	Reads	ReadsPct	Bases	BasesPct
-f_primer	64	50.00000%	16000	49.80080%
-r_primer	64	50.00000%	16000	49.80080%

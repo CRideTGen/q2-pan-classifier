@@ -1,6 +1,0 @@
-#File	sequences//ENTVxWCHx20211117_S21_L001_R1_001.fastq.gz	sequences//ENTVxWCHx20211117_S21_L001_R2_001.fastq.gz
-#Total	220	55220
-#Matched	220	100.00000%
-#Name	Reads	ReadsPct	Bases	BasesPct
-f_primer	116	52.72727%	29000	52.51720%
-r_primer	104	47.27273%	26000	47.08439%

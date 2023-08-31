@@ -1,6 +1,0 @@
-#File	sequences//ENTVxReillyMcKayx20211206_S25_L001_R1_001.fastq.gz	sequences//ENTVxReillyMcKayx20211206_S25_L001_R2_001.fastq.gz
-#Total	460	115460
-#Matched	459	99.78261%
-#Name	Reads	ReadsPct	Bases	BasesPct
-f_primer	236	51.30435%	59000	51.09995%
-r_primer	223	48.47826%	55750	48.28512%
