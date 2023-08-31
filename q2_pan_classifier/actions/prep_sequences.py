@@ -3,8 +3,11 @@ import tempfile
 
 import qiime2
 
-from q2_pan_classifier.actions.classify_reads import _get_cpus
-from q2_pan_classifier.actions.helper_functions import _generate_manifest_file_, _write_metadata_template_
+from q2_pan_classifier.actions.helper_functions.helper_functions import (
+    _get_cpus,
+    _generate_manifest_file_,
+    _write_metadata_template_,
+)
 
 
 def prep_sequence_reads_paired(ctx, sequences=None, sequences_directory=None, metadata_template_dir=None, primer_f=None,
