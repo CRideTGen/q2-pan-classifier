@@ -1,6 +1,6 @@
-setuptools~=49.6.0.post20210108
-qiime2~=2021.8.0.dev0+5.g1f8c27d
-numpy~=1.21.0
-pandas~=1.2.4
-Jinja2~=3.0.1
+setuptools~=62.6.0
+qiime2~=2022.4.0.dev0+5.g9fae0e7
+pandas~=1.4.2
+Jinja2~=3.1.2
 scikit-bio~=0.5.6
+versioneer~=0.23

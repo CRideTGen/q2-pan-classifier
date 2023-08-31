@@ -11,7 +11,6 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-import importlib
 
 from q2_dada2._stats import DADA2Stats
 from q2_feature_classifier.classifier import TaxonomicClassifier, Taxonomy
@@ -21,26 +20,21 @@ from q2_types.per_sample_sequences import PairedEndSequencesWithQuality, Sequenc
 from q2_types.sample_data import SampleData
 from qiime2.plugin import Plugin, Visualization
 from qiime2.plugin import Str, Int, Range
-
+from . import __version__
 import q2_pan_classifier.actions as actions
-from q2_pan_classifier.format_types import (DNAFastaNCBI, DNAFastaNCBIFormat, DNAFastaNCBIDirFormat, NCBIAccFile,
-                                            NCBIAccFileFormat, NCBIAccFileDirectoryFormat)
 
 # This is the plugin object. It is what the framework will load and what an
 # interface will interact with. Basically every registration we perform will
 # involve this object in some way.
+
 plugin = Plugin(name="pan-classifier",
-                version="0.0.1.dev",
+                version=__version__,
                 package="q2_pan_classifier",
                 website="https://github.com/ebolyen/q2-reveal")
 
-plugin.register_semantic_types(DNAFastaNCBI, NCBIAccFile)
-plugin.register_semantic_type_to_format(DNAFastaNCBI, DNAFastaNCBIDirFormat)
-plugin.register_semantic_type_to_format(NCBIAccFile, NCBIAccFileDirectoryFormat)
-plugin.register_formats(DNAFastaNCBIFormat, DNAFastaNCBIDirFormat)
-plugin.register_formats(NCBIAccFileFormat, NCBIAccFileDirectoryFormat)
+from q2_pan_classifier.types_formats import NCBIAccFile
 
-importlib.import_module("q2_pan_classifier.transformers")
+
 
 plugin.methods.register_function(
 
@@ -53,23 +47,6 @@ plugin.methods.register_function(
     name='Get accession numbers',
     description="Gets Accession Numbers"
 )
-
-# plugin.pipelines.register_function(
-#     function=actions.get_taxonomies_by_taxon_level,
-#     inputs={'accession_file': NCBIAccFile},
-#     outputs=[('ref_seqs', FeatureData[Sequence]),
-#              ('tax_ref', FeatureData[Taxonomy]),
-#              ],
-#     parameters={},
-#     input_descriptions=None,
-#     parameter_descriptions={
-#     },
-#     output_descriptions={'ref_seqs': 'Path where reference sequence Artifact will be written',
-#                          'trained_classifier': 'Path where the trained classifier Artifact will be written'
-#                          },
-#     name='Get_Taxonomies_by_name',
-#     description="test"
-# )
 
 plugin.methods.register_function(
     function=actions.generate_taxonomy,
