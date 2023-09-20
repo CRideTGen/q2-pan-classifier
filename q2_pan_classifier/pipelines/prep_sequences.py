@@ -2,8 +2,7 @@ import os
 import tempfile
 
 import qiime2
-
-from q2_pan_classifier.actions.helper_functions.helper_functions import (
+from q2_pan_classifier.utils.uils import (
     _get_cpus,
     _generate_manifest_file_,
     _write_metadata_template_,
