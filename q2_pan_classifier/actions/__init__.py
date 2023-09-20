@@ -11,4 +11,8 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
+# from q2_pan_classifier.actions import utils
 
+from q2_pan_classifier.actions.name_to_accessions import name_to_accessions
+
+__all__ = ["name_to_accessions"]

@@ -1,6 +1,5 @@
 from os import path
 
-import pkg_resources
 from jinja2 import Environment, FileSystemLoader
 
 from q2_pan_classifier.actions.helper_functions import _merge_table_, _get_cpus
