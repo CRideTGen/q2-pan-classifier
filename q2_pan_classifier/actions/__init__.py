@@ -14,5 +14,6 @@
 # from q2_pan_classifier.actions import utils
 
 from q2_pan_classifier.actions.name_to_accessions import name_to_accessions
+from q2_pan_classifier.actions.read_trimmers import fastp_paired
 
-__all__ = ["name_to_accessions"]
+__all__ = ["name_to_accessions", "fastp_paired"]

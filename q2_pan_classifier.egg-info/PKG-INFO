@@ -1,8 +1,10 @@
 Metadata-Version: 2.1
 Name: q2-pan-classifier
-Version: dev-0.1.0-30.ga39aa75.dirty
-Home-page: https://github.com/CRideTGen4/q2-pan-classifier
-Author: Chase Ridenour
-Author-email: cridenour@tgen.org
-License: Apache-2.0
+Version: 0+untagged.56.g9a926e8.dirty
+Summary: My package description
+License: ACADEMIC AND RESEARCH LICENSE 2015, The Translational Genomics Research Institute. All rights reserved.
+Keywords: one,two
+Classifier: Programming Language :: Python :: 3
+Requires-Python: <=3.11.4
+Description-Content-Type: text/x-rst
 License-File: LICENSE

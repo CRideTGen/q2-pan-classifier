@@ -1,5 +1,2 @@
-[console_scripts]
-read_pipeline = q2_pan_classifier.scripts.scratch_new:read_pipeline
-
 [qiime2.plugins]
 q2-pan-classifier = q2_pan_classifier.plugin_setup:plugin

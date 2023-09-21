@@ -1,7 +1,8 @@
 from os import path
 
 from jinja2 import Environment, FileSystemLoader
-from q2_pan_classifier.actions.helper_functions import _merge_table_, _get_cpus
+
+from q2_pan_classifier.utils import merge_table, get_cpus
 
 
 def classify_reads(
@@ -35,7 +36,7 @@ def classify_reads(
             demultiplexed_seqs=samp_reads,
             trunc_len_f=trunc_len_f,
             trunc_len_r=trunc_len_r,
-            n_threads=_get_cpus(),
+            n_threads=get_cpus(),
         )
 
     (classified,) = classify_sklearn(
@@ -43,7 +44,7 @@ def classify_reads(
     )
     barplot_taxonomy = barplot(table=dada2_table_out, taxonomy=classified)
 
-    merged_table = _merge_table_(
+    merged_table = merge_table(
         transpose, dada2_table_out, dada2_rep_seqs_out, classified
     )
     tabulated_table = tabulate(merged_table)
@@ -83,7 +84,7 @@ def classify_reads_single(
         dada2_stats_out = dada2_stats
     else:
         dada2_table_out, dada2_rep_seqs_out, dada2_stats_out = dada2(
-            demultiplexed_seqs=samp_reads, trunc_len=trunc_len, n_threads=_get_cpus()
+            demultiplexed_seqs=samp_reads, trunc_len=trunc_len, n_threads=get_cpus()
         )
 
     (classified,) = classify_sklearn(
@@ -91,7 +92,7 @@ def classify_reads_single(
     )
     barplot_taxonomy = barplot(table=dada2_table_out, taxonomy=classified)
 
-    merged_table = _merge_table_(
+    merged_table = merge_table(
         transpose, dada2_table_out, dada2_rep_seqs_out, classified
     )
     tabulated_table = tabulate(merged_table)

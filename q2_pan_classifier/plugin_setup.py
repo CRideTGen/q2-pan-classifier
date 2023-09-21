@@ -8,6 +8,7 @@ from qiime2.plugin import Plugin, Visualization
 from qiime2.plugin import Str, Int, Range
 
 import q2_pan_classifier.actions as actions
+from q2_pan_classifier.actions import fastp_paired
 from q2_pan_classifier.types_formats import (
     NCBIAccFile,
     DNAFastaNCBIFormat,
@@ -286,4 +287,21 @@ plugin.visualizers.register_function(
     parameter_descriptions={},
     name='Final Visualization',
     description=("Making things look like things")
+)
+
+plugin.methods.register_function(
+    function=fastp_paired,
+    inputs={"read": SampleData[PairedEndSequencesWithQuality]},
+    parameters={},
+    outputs=[("trimmed_reads", SampleData[PairedEndSequencesWithQuality])],
+    input_descriptions={
+        "read": ""
+    },
+    parameter_description={},
+    output_descriptions={
+        "trimmed_reads": ""
+    },
+    name="fastp_paired",
+    description="",
+    citations=[]
 )
