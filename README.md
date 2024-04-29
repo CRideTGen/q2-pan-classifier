@@ -86,9 +86,14 @@ cd test_analysis
       --p-r-primer ATTGTCACCATAAGCAGCCA \
       --p-min-length 0 --p-max-length 500 \
       --o-reads references/sequences_trimmed.qza
-  
-  qiime rescript dereplicate \
+
+  qiime rescript cull-seqs \
       --i-sequences references/sequences_trimmed.qza \
+      --o-clean-sequences references/sequences_trimmed_cleaned
+
+
+  qiime rescript dereplicate \
+      --i-sequences references/sequences_trimmed_cleaned.qza \
       --i-taxa references/taxonomy.qza \
       --p-derep-prefix \
       --o-dereplicated-sequences references/sequences_dereplicated.qza \
