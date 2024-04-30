@@ -125,24 +125,8 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
 1. ### Importing Sequences into Qiime2
 
-   1. #### Create manifest file
 
-   This file is used by qiime2 to import the sequences into a qiime2 specific .qza file. Documentation on this import can be found at: [link]( https://docs.qiime2.org/2020.6/tutorials/importing/#sequence-data-with-sequence-quality-information-i-e-fastq)
-   scroll down to the section titled *“Fastq manifest” formats*
-
-   The make_manifest_file.sh bash script will be used to generate your manifest:
-
-   ```bash
-   bash ./scripts/make_manifest_file.sh -d example_sequences -o entero_manifest
-   
-   #check the generated manifest file
-   
-   cat entero_manifest | column -t
-   ```
-
-   
-
-2. #### 	qiime2 import command
+1. #### 	qiime2 import command
 
    ```bash
    module load qiime2
