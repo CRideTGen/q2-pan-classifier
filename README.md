@@ -122,8 +122,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
 ## Preparing Sequences
 
-
-1. ### Importing Sequences into Qiime2
+### Importing Sequences into Qiime2
 
 
 1. #### 	qiime2 import command
