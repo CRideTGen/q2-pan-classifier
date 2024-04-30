@@ -149,9 +149,9 @@ We will be using the classifier generated in part1 to classify the 5 example sam
     
    qiime tools import \
      --type 'SampleData[PairedEndSequencesWithQuality]' \
-     --input-path entero_manifest \
-     --output-path paired_end_demux_entero.qza \
-     --input-format PairedEndFastqManifestPhred33V2
+     --input-path reads \
+     --output-path paired_end_demux_entero \
+     --input-format CasavaOneEightSingleLanePerSampleDirFmt
    ```
 
    1. #### Notes on inputs: 
@@ -211,9 +211,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
            --p-trim-left-r 0 \
            --p-trunc-len-f 200 \
            --p-trunc-len-r 200 \
-           --o-representative-sequences rep_seqs_dada2_entero.qza \
-           --o-table table_dada2_entero.qza \
-           --o-denoising-stats stats_dada2_entero.qza
+           --output-dir dada2
       
       ```
 
@@ -237,12 +235,12 @@ We will be using the classifier generated in part1 to classify the 5 example sam
    1. ```bash
       qiime feature-table summarize \
         --i-table table_dada2_entero.qza \
-        --o-visualization visual_output/table_entero.qzv \
+        --o-visualization visual_output/table_entero \
         --m-sample-metadata-file ENTV_metadata.tsv
       
       qiime feature-table tabulate-seqs \
         --i-data rep_seqs_dada2_entero.qza \
-        --o-visualization visual_output/rep_seqs_entero.qzv
+        --o-visualization visual_output/rep_seqs_entero
         
       ```
 
@@ -256,7 +254,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
       qiime feature-classifier classify-sklearn   \
       --i-classifier ../classifier/classifier.qza  \
        --i-reads rep_seqs_dada2_entero.qza   \
-       --o-classification taxonomy_entero.qza
+       --o-classification taxonomy_entero
       ```
 
       
@@ -270,7 +268,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
        --i-table table_dada2_entero.qza \
        --i-taxonomy taxonomy_entero.qza \
        --m-metadata-file ENTV_metadata.tsv \
-       --o-visualization visual_output/taxa_bar_plots_entero.qzv
+       --o-visualization visual_output/taxa_bar_plots_entero
       
       ```
 
@@ -284,7 +282,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
    ```bash
    qiime feature-table transpose \
      --i-table table_dada2_entero.qza \
-     --o-transposed-feature-table transposed_table_dada2_entero.qza \
+     --o-transposed-feature-table transposed_table_dada2_entero \
    
    ```
 
@@ -295,7 +293,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
      --m-input-file taxonomy_entero.qza \
      --m-input-file rep_seqs_dada2_entero.qza \
      --m-input-file transposed_table_dada2_entero.qza \
-     --o-visualization visual_output/feat-tax-rep.qzv
+     --o-visualization visual_output/feat-tax-rep
    ```
 
 # scratch_new Script File Usage
