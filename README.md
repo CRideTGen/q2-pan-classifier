@@ -141,7 +141,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
 
       - --type: tells qiime2 what type of sequence data is being imported, e.g., single or paired end
 
-      - --input-path: path to manifest file
+      - --input-path: path to directory containing paired reads. 
 
       - --output-path: name of output file
 
