@@ -192,7 +192,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
            --i-demultiplexed-seqs paired_end_demux_entero_trimmed.qza \
            --p-trim-left-f 0 \
            --p-trim-left-r 0 \
-           --p-trunc-len-f 200 \
+           --p-trunc-len-f 220 \
            --p-trunc-len-r 200 \
            --output-dir dada2
       
@@ -203,7 +203,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
    - --p-trim-left-f Trims all of the bases upto the base given for the forward reads. e.g., --p-trim-left-f 25 will trim base position 1-25 off all the reads.
 
    *  --p-trim-left-r same as above but for reverse reads.
-   *  --p-trunc-len-f Truncates all of the bases after the base given for the forward reads. e.g., --p-trunc-len-f 200 will remove bases 201-end of read.
+   *  --p-trunc-len-f Truncates all of the bases after the base given for the forward reads. e.g., --p-trunc-len-f 220 will remove bases 221-end of read.
    *  --p-trunc-len-r same as above but for reverse reads.
 
 6. ### Generate Metadata file using Keemei  
