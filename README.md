@@ -193,7 +193,7 @@ We will be using the classifier generated in part1 to classify the 5 example sam
            --p-trim-left-f 0 \
            --p-trim-left-r 0 \
            --p-trunc-len-f 220 \
-           --p-trunc-len-r 200 \
+           --p-trunc-len-r 220 \
            --output-dir dada2
       
       ```
